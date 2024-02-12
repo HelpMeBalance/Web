@@ -1,19 +1,67 @@
+
 {% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
-
 {% block body %}
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}Register - HelpMeBalance{% endblock %}
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/iofrm-style.css" />
+    <link rel="stylesheet" type="text/css" href="css/iofrm-theme2.css" />
+  </head>
+  <body>
+    <div class="form-body">
+      <div class="website-logo">
+        <a href="index.html">
+          <div class="logo">
+            <img class="logo-size" src="images/logo-light.svg" alt="" />
+          </div>
+        </a>
+      </div>
+      <div class="row">
+        <div class="img-holder">
+          <div class="bg"></div>
+          <div class="info-holder"></div>
+        </div>
+        <div class="form-holder">
+          <div class="form-content">
+            <div class="form-items">
+              <h3>Get more things done with Loggin platform.</h3>
+              <p>
+                Access to the most powerfull tool in the entire design and web
+                industry.
+              </p>
+              <div class="page-links">
+                <a href="login">Login</a
+                ><a href="register" class="active">Register</a>
+              </div>
+              {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+                <p>{{ form_row(registrationForm.agreeTerms) }}</p>
+                <div class="form-button">
+                  <button id="submit" type="submit" class="ibtn">
+                    Register
+                  </button>
+                </div>
+              {{ form_end(registrationForm) }}
+              <div>
+              Already have an account? <a href="{{ path('app_login') }}">Sign in</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
+  {% endblock %}
