@@ -25,9 +25,13 @@ class Categorie
     #[ORM\OneToMany(targetEntity: SousCategorie::class, mappedBy: 'Categorie')]
     private Collection $sousCategories;
 
+    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'Categorie')]
+    private Collection $publications;
+
     public function __construct()
     {
         $this->sousCategories = new ArrayCollection();
+        $this->publications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +87,36 @@ class Categorie
             // set the owning side to null (unless already changed)
             if ($sousCategory->getCategorie() === $this) {
                 $sousCategory->setCategorie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Publication>
+     */
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): static
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications->add($publication);
+            $publication->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): static
+    {
+        if ($this->publications->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getCategorie() === $this) {
+                $publication->setCategorie(null);
             }
         }
 
