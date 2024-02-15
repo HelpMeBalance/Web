@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
 class Publication
 {
@@ -26,19 +26,19 @@ class Publication
     private ?bool $anonyme = null;
 
     #[ORM\Column]
-    private ?int $likes = null;
+    private ?int $likes = 0;
 
     #[ORM\Column]
-    private ?bool $valide = null;
+    private ?bool $valide = FALSE;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateC = null;
+    #[ORM\Column(type: 'datetime_immutable')] //saisir date creation automatique
+    private ?\DateTimeImmutable $dateC;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateM = null;
+    #[ORM\Column(type: 'datetime_immutable')] 
+    private ?\DateTimeImmutable $dateM;
 
     #[ORM\Column]
-    private ?int $vues = null;
+    private ?int $vues = 0;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
     #[ORM\JoinColumn(nullable: false)]
@@ -58,6 +58,8 @@ class Publication
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->dateC =  new \DateTimeImmutable();
+        $this->dateM = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -125,24 +127,24 @@ class Publication
         return $this;
     }
 
-    public function getDateC(): ?\DateTimeInterface
+    public function getDateC(): ?\DateTimeImmutable
     {
         return $this->dateC;
     }
 
-    public function setDateC(\DateTimeInterface $dateC): static
+    public function setDateC(\DateTimeImmutable $dateC): static
     {
         $this->dateC = $dateC;
 
         return $this;
     }
 
-    public function getDateM(): ?\DateTimeInterface
+    public function getDateM(): ?\DateTimeImmutable
     {
         return $this->dateM;
     }
 
-    public function setDateM(\DateTimeInterface $dateM): static
+    public function setDateM(\DateTimeImmutable $dateM): static
     {
         $this->dateM = $dateM;
 
