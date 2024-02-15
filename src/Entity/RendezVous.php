@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RendezVousRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RendezVousRepository::class)]
 class RendezVous
@@ -14,9 +15,11 @@ class RendezVous
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Please enter a date.')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateR = null;
 
+    #[Assert\NotBlank(message: 'Please enter a Service Name.')]
     #[ORM\Column(length: 255)]
     private ?string $nomService = null;
 
