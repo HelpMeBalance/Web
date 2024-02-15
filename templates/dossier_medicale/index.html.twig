@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DossierMedicale index{% endblock %}
+
+{% block body %}
+    <h1>DossierMedicale index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dossier_medicale in dossier_medicales %}
+            <tr>
+                <td>{{ dossier_medicale.id }}</td>
+                <td>
+                    <a href="{{ path('app_dossier_medicale_show', {'id': dossier_medicale.id}) }}">show</a>
+                    <a href="{{ path('app_dossier_medicale_edit', {'id': dossier_medicale.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dossier_medicale_new') }}">Create new</a>
+{% endblock %}
