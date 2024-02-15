@@ -5,22 +5,53 @@
 {% block body %}
     <h1>Question</h1>
 
-    <table class="table">
+    <table border="1">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ question.id }}</td>
+
             </tr>
             <tr>
                 <th>Question</th>
                 <td>{{ question.question }}</td>
             </tr>
+
         </tbody>
     </table>
 
-    <a href="{{ path('app_question_index') }}">back to list</a>
 
-    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Reponse</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for reponse in Listrepons %}
+                <tr>
+                    <td>{{ reponse.id }}</td>
+                    <td>{{ reponse.reponse }}</td>
+                    <td>
+                        <a href="{{ path('app_reponse_show', {'id': reponse.id}) }}">show</a>
+                        <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_reponse_new',{'idq': question.id}) }}">Create new</a></br>
+
+    <a href="{{ path('app_question_index') }}">back to list</a></br>
+
+    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a></br>
 
     {{ include('question/_delete_form.html.twig') }}
 {% endblock %}

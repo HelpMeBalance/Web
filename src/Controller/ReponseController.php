@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reponse;
 use App\Form\ReponseType;
+use App\Repository\QuestionRepository;
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,14 +23,15 @@ class ReponseController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_reponse_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{idq}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
+    public function new($idq,Request $request, EntityManagerInterface $entityManager,QuestionRepository $rep): Response
     {
         $reponse = new Reponse();
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $reponse->setQuestion($rep->find($idq));
             $entityManager->persist($reponse);
             $entityManager->flush();
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
+use App\Repository\ReponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +44,11 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_question_show', methods: ['GET'])]
-    public function show(Question $question): Response
+    public function show(Question $question , ReponseRepository $rep,$id): Response
     {
+        $repos=$rep->findBy(['question'=>$question]);
         return $this->render('question/show.html.twig', [
-            'question' => $question,
+            'question' => $question,'Listrepons'=>$repos
         ]);
     }
 
