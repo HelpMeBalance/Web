@@ -19,6 +19,7 @@ class Reponse
     private ?string $reponse = null;
 
     #[ORM\ManyToOne(inversedBy: 'reponse')]
+    #[Assert\NotBlank(message: 'Please enter a question.')]
     private ?Question $question = null;
 
     public function getId(): ?int

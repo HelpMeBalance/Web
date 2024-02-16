@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\Time;
 
 #[Route('/consultation')]
 class ConsultationController extends AbstractController
@@ -26,6 +27,7 @@ class ConsultationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $consultation = new Consultation();
+        $consultation->setDuree(new \DateTime());
         $form = $this->createForm(ConsultationType::class, $consultation);
         $form->handleRequest($request);
 

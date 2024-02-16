@@ -4,13 +4,14 @@
 
 {% block body %}
 
-{{ include('dossier_medicale/_form.html.twig') }}
+{# {{ include('dossier_medicale/_form.html.twig') }} #}
 
-    <div class="flex justify-center items-center h-screen bg-blue-200">
-        
+<div class="flex justify-center items-center h-screen bg-blue-200">   
+    <div class="w-full max-w-md bg-gray-200 p-4 rounded-md">
+        <div class="mb-4">
     <form >
     {% for question in ques %}
-    <div class="w-full max-w-md bg-gray-200 p-4 rounded-md">
+    
     <table border="1">
         <tbody>
             
@@ -36,7 +37,7 @@
                 <tr>
                     <td>{{ reponse.reponse }}</td>
                     <td>
-                        <a href="{{ path('handle_form_submission', {'idq': question.id,'idr': reponse.id}) }}">add</a>
+                        <a  href="{{ path('handle_form_submission', {'idq': question.id,'idr': reponse.id}) }}">add</a>
                     </td>
                 </tr>
             
@@ -45,12 +46,14 @@
             </tbody>
             
         </table>
-    </div>
+
         
     
     {%endfor%}
 </form>
-    <a href="{{ path('app_dossier_medicale_index') }} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"">back to list</a>
+</div>
+    <a href="{{ path('app_dossier_medicale_index') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" >back to list</a>
 
+    </div>
     </div>
     {% endblock %}

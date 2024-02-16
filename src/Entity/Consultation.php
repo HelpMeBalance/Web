@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ConsultationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConsultationRepository::class)]
 class Consultation
@@ -15,18 +17,23 @@ class Consultation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'veuillez remplir durée.')]
     private ?\DateTimeInterface $duree = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'veuillez remplir note.')]
     private ?string $note = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: 'veuillez remplir avis patient.')]
+    #[Assert\Range(min:0, max:5, notInRangeMessage:'veuillez entrer une valeur entre 0 et 5')]
     private ?float $avisPatient = null;
 
     #[ORM\Column]
     private ?bool $RecommandationSuivi = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Assert\NotBlank(message: 'veuillez remplir rendez-vous.')]
     private ?RendezVous $rendezvous = null;
 
     public function getId(): ?int
