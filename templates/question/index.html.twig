@@ -3,33 +3,36 @@
 {% block title %}Question index{% endblock %}
 
 {% block body %}
-    <h1>Question index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Question</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for question in questions %}
-            <tr>
-                <td>{{ question.id }}</td>
-                <td>{{ question.question }}</td>
-                <td>
-                    <a href="{{ path('app_question_show', {'id': question.id}) }}">show</a>
-                    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_question_new') }}">Create new</a>
+<div class="flex justify-center items-center h-screen bg-blue-200">   
+    <div class="w-full max-w-md bg-gray-200 p-4 rounded-md">
+        <div class="mb-4">
+            <table border="1" >
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Question</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for question in questions %}
+                    <tr>
+                        <td>{{ question.id }}</td>
+                        <td>{{ question.question }}</td>
+                        <td>
+                            <a href="{{ path('app_question_show', {'id': question.id}) }}">show</a>
+                            <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    <a href="{{ path('app_question_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Create new</a>
+</div>
+</div>
 {% endblock %}
