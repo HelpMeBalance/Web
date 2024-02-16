@@ -45,7 +45,11 @@
             </tr>
         </tbody>
     </table>
-
+    {% if (like==0) %}
+    <a href="{{ path('app_publication_like', {'id': publication.id}) }}">Like</a>
+    {%else %}
+    <a href="{{ path('app_publication_dislike', {'id': publication.id}) }}">Dislike</a>
+    {% endif %}
     <a href="{{ path('app_publication_index') }}">back to list</a>
 
     <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
