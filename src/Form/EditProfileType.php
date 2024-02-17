@@ -16,26 +16,32 @@ class EditProfileType extends AbstractType
     {
         $builder
             ->add('lastname', TextType::class,[
-                'attr' => ['class' => 'p-2 rounded-md w-full'],
+                'attr' => [
+                    'class' => 'p-2 rounded-md w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent'],
+                'mapped' => false,
                 'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Please enter a lastname',
                         ]),
                         new Length([
-
+                            'minMessage' => 'Your lastname should be at least {{ limit }} characters',
+                            'maxMessage' => 'Your lastname should be no more than {{ limit }} characters',
                             'min' => 2,
                             'max' => 50,
                         ]),
                     ],
             ])
             ->add('firstname', TextType::class,[
-                'attr' => ['class' => 'p-2 rounded-md w-full'],
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'p-2 rounded-md w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent'],
                 'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Please enter a firstname',
                         ]),
                         new Length([
-                            
+                            'minMessage' => 'Your firstname should be at least {{ limit }} characters',
+                            'maxMessage' => 'Your firstname should be no more than {{ limit }} characters',
                             'min' => 2,
                             'max' => 50,
                         ]),

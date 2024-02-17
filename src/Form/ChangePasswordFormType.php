@@ -31,17 +31,15 @@ class ChangePasswordFormType extends AbstractType
                         ]),
                     ],
                     'label' => 'New password :',
-                    'label_attr' => ['class' => 'text-white pr-2'],
-                    'attr' => ['class' => 'p-2 rounded-md'], // Add a CSS class
+                    'label_attr' => ['class' => 'text-gray-900 pr-2'],
+                    'attr' => ['class' => 'p-2 rounded-md w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent'], // Add a CSS class
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password : ',
-                    'label_attr' => ['class' => 'text-white pr-2'],
-                    'attr' => ['class' => 'p-2 rounded-md'], // Add a CSS class
+                    'label_attr' => ['class' => 'text-gray-900 pr-2'],
+                    'attr' => ['class' => 'p-2 rounded-md w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent'], // Add a CSS class
                 ],
                 'invalid_message' => 'The password fields must match.',
-                // Instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
             ])
         ;

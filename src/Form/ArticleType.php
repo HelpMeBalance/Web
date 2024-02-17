@@ -20,12 +20,12 @@ class ArticleType extends AbstractType
             ->add('description')
             ->add('panier', EntityType::class, [
                 'class' => Panier::class,
-'choice_label' => 'id',
-'multiple' => true,
+                'choice_label' => 'id',
+                'multiple' => true,
             ])
             ->add('categorie', EntityType::class, [
                 'class' => CategorieProduit::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
         ;
     }
