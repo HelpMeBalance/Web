@@ -52,23 +52,24 @@ class ReponseController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ReponseType::class, $reponse);
-        $form->handleRequest($request);
+#[Route('/{id}/edit/{idq}', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager, $idq): Response
+{
+    $form = $this->createForm(ReponseType::class, $reponse);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_reponse_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('reponse/edit.html.twig', [
-            'reponse' => $reponse,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_question_show', ['id'=>$idq], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('reponse/edit.html.twig', [
+        'reponse' => $reponse,
+        'form' => $form,
+        'idq' => $idq,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_reponse_delete', methods: ['POST'])]
     public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
