@@ -72,18 +72,16 @@ class ProfileController extends AbstractController
 
             
             if ($form->isSubmitted() && $form->isValid()) {
-                $newPassword = $passwordForm->get('plainPassword')->getData();
-                $user->setPassword(hashPassword(
-                    $newPassword, PASSWORD_DEFAULT
-                    )
-                );
+                $newPassword = $passwordForm->getData();
+                $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+                $entityManager->persist($user);
                 $entityManager->flush();
                 $this->addFlash('message', 'Mot de passe mis à jour');
                 return $this->redirectToRoute('profile');
             }
 
             return $this->render('profile/change_password.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form,
             ]);
         }
     

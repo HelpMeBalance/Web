@@ -8,12 +8,12 @@
 
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                 <div class="mb-4">
-                    <label for="firstname" class="text-white mb-2">Changer First Name</label>
-                    {{ form_widget(form.firstname, {'id': 'firstname', 'class': 'form-input w-full p-2 rounded-md'}) }}
+                    <label for="firstname" class="text-white mb-2">First Name : </label>
+                    {{ form_widget(form.firstname) }}
                 </div>
                 <div class="mb-4">
-                    <label for="lastname" class="text-white mb-2">Changer Last Name</label> 
-                    {{ form_widget(form.lastname, {'id': 'lastname', 'class': 'form-input w-full p-2 rounded-md'}) }}
+                    <label for="lastname" class="text-white mb-2">Last Name : </label> 
+                    {{ form_widget(form.lastname) }}
                 </div>
                 <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-50">Modifier</button>
             {{ form_end(form) }}
