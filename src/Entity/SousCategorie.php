@@ -26,7 +26,7 @@ class SousCategorie
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'SousCategorie')]
+    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'SousCategorie', cascade: ['persist', 'remove'])]
     private Collection $publications;
 
     public function __construct()

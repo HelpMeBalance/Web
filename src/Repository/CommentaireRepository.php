@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Commentaire;
+use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,6 +25,16 @@ class CommentaireRepository extends ServiceEntityRepository
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects
 //     */
+public function findAllUnderPublication(Publication $publication): array
+{
+    return $this->createQueryBuilder('c')
+    ->join('c.Publication','p')
+    ->andWhere('p.id = :val')
+    ->setParameter('val', $publication->getId())
+    ->orderBy('c.dateC', 'DESC')
+    ->getQuery()
+    ->getResult();
+}
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('c')

@@ -34,10 +34,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'User')]
+    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'User', cascade: ['persist', 'remove'])]
     private Collection $publications;
 
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'User')]
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'User', cascade: ['persist', 'remove'])]
     private Collection $commentaires;
 
     public function __construct()

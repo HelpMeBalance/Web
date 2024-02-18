@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Publication;
 use App\Form\PublicationType;
 use App\Repository\PublicationRepository;
+use App\Repository\CommentaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,15 +45,21 @@ class PublicationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_publication_show', methods: ['GET'])]
-    public function show(Publication $publication, EntityManagerInterface $entityManager): Response
+    public function show(Publication $publication, EntityManagerInterface $entityManager,CommentaireRepository $commentaireRepository): Response
     {
         $publication->setVues($publication->getVues()+1);
         $entityManager->flush();
         return $this->render('publication/show.html.twig', [
-            'publication' => $publication,'like'=>0
+            'publication' => $publication,'like'=>0,'nbcom'=>count($commentaireRepository->findAllUnderPublication($publication))
         ]);
     }
-
+    #[Route('/{id}/showcoms', name: 'app_publication_show_comments', methods: ['GET'])]
+    public function showComments(Publication $publication,CommentaireRepository $commentaireRepository): Response
+    {
+        return $this->render('commentaire/showunderpub.html.twig', [
+            'commentaires' => $commentaireRepository->findAllUnderPublication($publication),'publication'=>$publication,
+        ]);
+    }
     #[Route('/{id}/edit', name: 'app_publication_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
     {
