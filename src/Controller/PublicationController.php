@@ -44,10 +44,12 @@ class PublicationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_publication_show', methods: ['GET'])]
-    public function show(Publication $publication): Response
+    public function show(Publication $publication, EntityManagerInterface $entityManager): Response
     {
+        $publication->setVues($publication->getVues()+1);
+        $entityManager->flush();
         return $this->render('publication/show.html.twig', [
-            'publication' => $publication,
+            'publication' => $publication,'like'=>0
         ]);
     }
 
@@ -69,7 +71,24 @@ class PublicationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[Route('/{id}/like', name: 'app_publication_like', methods: ['GET', 'POST'])]
+    public function like(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
+    {
+        $publication->setLikes($publication->getLikes()+1);
+        $entityManager->flush();
+        return $this->render('publication/show.html.twig', [
+            'publication' => $publication,'like'=>1
+        ]);
+    }
+    #[Route('/{id}/dislike', name: 'app_publication_dislike', methods: ['GET', 'POST'])]
+    public function dislike(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
+    {
+        $publication->setLikes($publication->getLikes()-1);
+        $entityManager->flush();
+        return $this->render('publication/show.html.twig', [
+            'publication' => $publication,'like'=>0
+        ]);
+    }
     #[Route('/{id}', name: 'app_publication_delete', methods: ['POST'])]
     public function delete(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
     {
