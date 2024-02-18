@@ -22,10 +22,10 @@ class Categorie
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(targetEntity: SousCategorie::class, mappedBy: 'Categorie')]
+    #[ORM\OneToMany(targetEntity: SousCategorie::class, mappedBy: 'Categorie', cascade: ['persist', 'remove'])]
     private Collection $sousCategories;
 
-    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'Categorie')]
+    #[ORM\OneToMany(targetEntity: Publication::class, mappedBy: 'Categorie', cascade: ['persist', 'remove'])]
     private Collection $publications;
 
     public function __construct()
