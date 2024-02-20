@@ -21,7 +21,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank(message: 'Please enter your email.')]
     #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
     private ?string $email = null;
 
@@ -41,9 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $commentaires;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'Please enter your first name.')]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'Please enter your last name.')]
     private ?string $lastname = null;
 
     public function __construct()

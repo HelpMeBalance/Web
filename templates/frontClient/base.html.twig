@@ -122,16 +122,31 @@
                     <i class="far fa-bars"></i>
                   </button>
                 </li>
-                <li>
-                  <a class="btn btn-primary" href="{{ path('app_login') }}">
-                    <span class="btn_text" data-text="🤯">
-                    Login
-                    </span>
-                    <span class="btn_icon">
-                      <i class="fa-solid fa-arrow-up-right"></i>
-                    </span>
-                  </a>
-                </li>
+              {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                  <!-- Profile Dropdown for Logged-in Users -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link  dropdown-toggle d-flex justify-content-center items-align-center" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fas fa-user"></i>
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <li><a class="dropdown-item" href="{{ path('profile_edit') }}">Edit Profile</a></li>
+                          <li><a class="dropdown-item" href="{{ path('profile_change_password') }}">Change Password</a></li>
+                          <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                      </ul>
+                  </li>
+              {% else %}
+                  <!-- Login Button for Guests -->
+                  <li>
+                    <a class="btn btn-primary" href="{{ path('app_login') }}">
+                      <span class="btn_text" data-text="🤯">
+                      Login
+                      </span>
+                      <span class="btn_icon">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                      </span>
+                    </a>
+                  </li>
+              {% endif %}
               </ul>
             </div>
           </div>

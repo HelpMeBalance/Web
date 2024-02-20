@@ -55,6 +55,10 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
+            'service'=>0,
+            'part'=>7,
+            'title'=>'Edit Profile',
+            'titlepage'=>'Edit Profile -',        
         ]);
         
     }
@@ -82,6 +86,10 @@ class ProfileController extends AbstractController
 
             return $this->render('profile/change_password.html.twig', [
                 'form' => $form->createView(),
+                'service'=>0,
+                'part'=>7,
+                'title'=>'Change Password',
+                'titlepage'=>'Change Password -',  
             ]);
         }
     

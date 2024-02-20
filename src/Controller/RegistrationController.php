@@ -14,21 +14,23 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Hash the password
             $user->setPassword(
-                $userPasswordHasher->hashPassword(
+                $passwordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
 
+            // Use the injected entity manager
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
@@ -38,6 +40,10 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'service'=>0,
+            'part'=>7,
+            'title'=>'Register',
+            'titlepage'=>'Register - ',
         ]);
     }
 }
