@@ -106,4 +106,5 @@ class PublicationController extends AbstractController
 
         return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }

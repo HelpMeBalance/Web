@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\Tools\Pagination\Paginator;
 /**
  * @extends ServiceEntityRepository<Publication>
  *
@@ -20,7 +20,25 @@ class PublicationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Publication::class);
     }
+    public function findPaginated(int $page, int $perPage)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->orderBy('p.vues', 'DESC')
+            ->addOrderBy('p.dateC', 'DESC')
+            ->getQuery();
 
+        return $this->paginate($query, $perPage, $page);
+    }
+
+    private function paginate($query, $perPage, $page)
+    {
+        $offset = ($page - 1) * $perPage;
+        $query->setFirstResult($offset)
+            ->setMaxResults($perPage);
+
+        return new Paginator($query, $fetchJoinCollection = true);
+    }
+    
 //    /**
 //     * @return Publication[] Returns an array of Publication objects
 //     */
