@@ -37,6 +37,9 @@ class Article
     #[ORM\JoinColumn(nullable: false)]
     private ?CategorieProduit $categorie = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $quantité = null;
+
     public function __construct()
     {
         $this->panier = new ArrayCollection();
@@ -115,6 +118,18 @@ class Article
     public function setCategorie(?CategorieProduit $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getQuantité(): ?int
+    {
+        return $this->quantité;
+    }
+
+    public function setQuantité(?int $quantité): static
+    {
+        $this->quantité = $quantité;
 
         return $this;
     }

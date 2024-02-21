@@ -21,6 +21,10 @@ class ArticleController extends AbstractController
     {
         return $this->render('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
+            'service' => 0,
+            'part' => 3,
+            'title' => 'Store',
+            'titlepage' => 'Store- ',
         ]);
     }
 

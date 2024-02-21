@@ -1,0 +1,539 @@
+{% extends 'frontClient/base.html.twig' %}
+{% block pageBannerurlretour %}
+                <li><a href="{{ path('app_blogClient', {'page': 1}) }}">Brave Chats</a></li>
+                <li>{{ title }}</li>
+ {% endblock %}
+{% block body %}
+ <!-- Blog Details Section - Start
+        ================================================== -->
+        <section class="blog_details_section ">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="blog_image">
+                    <img
+                    src="{{ asset(article.image) }}"
+                    alt="HelpMeBalance"
+                    />
+                  </div>
+                  <div class="details_content">
+                    <ul class="post_meta unordered_list mb-4">
+                     
+                      <li>{{ article.vues }} <i class="fa-solid fa-eye"></i></li>
+                  
+                    </ul>
+                    <h3 class="item_title">
+                           <mark>  {{ article.titre }} <i class="fa-solid fa-pen"></i></mark>
+                      </h3>
+                    <p>
+                        {{ article.description|nl2br}}
+                    </p>
+                    <div class="post_tagsandshare">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <h4 class="wrap_title">Releted Tags</h4>
+                          <ul class="post_tags unordered_list">
+                            {% for souscat in souscategories %}
+                            <li><a href="{{ path('app_blogSousCatClient', {'souscat': souscat.id, 'page': 1}) }}">{{ souscat.nom }}</a></li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                        <div class="col-md-6">
+                          <h4 class="wrap_title text-md-end">Share:</h4>
+                          <ul
+                            class="social_links unordered_list justify-content-md-end"
+                          >
+                            <li>
+                              <a href="#!"
+                                ><i class="fa-brands fa-facebook-f"></i
+                              ></a>
+                            </li>
+                            <li>
+                              <a href="#!"
+                                ><i class="fa-brands fa-instagram"></i
+                              ></a>
+                            </li>
+                            <li>
+                              <a href="#!"
+                                ><i class="fa-brands fa-twitter"></i
+                              ></a>
+                            </li>
+                            <li>
+                              <a href="#!"
+                                ><i class="fa-brands fa-whatsapp"></i
+                              ></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="prev_next_post_nav">
+                      <a href="#!">
+                        <span class="item_icon">
+                          <i class="fa-regular fa-angle-left"></i>
+                        </span>
+                        <span class="item_content">
+                          <b>Previous</b>
+                          <strong>The Family as a Small Socity</strong>
+                        </span>
+                      </a>
+                      <a href="#!">
+                        <span class="item_icon">
+                          <i class="fa-regular fa-angle-right"></i>
+                        </span>
+                        <span class="item_content">
+                          <b>Next</b>
+                          <strong>Ways to Create Family Harmony</strong>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+  
+                  <div class="blog_post_author">
+                    <div class="author_image">
+                      <img
+                        src="assets/images/meta/author_image_3-min.png"
+                        alt="Talking Minds - Psychotherapist Site Template"
+                      />
+                    </div>
+                    <div class="author_content">
+                      <h4 class="author_name">Dr. Merry Rose</h4>
+                      <span class="author_designation"
+                        >Practicing psychologist, Psy. D</span
+                      >
+                      <p class="mb-0">
+                        Phasellus viverra nulla ut metus varius laoreet. Quisque
+                        Nullam quis ante. Etiam sit amet orci eget eros tincidunt.
+                        Phasellus viverra nulla ut metus varius laoreet. Quisque
+                        rutrum. Aenean imperdiet.
+                      </p>
+                    </div>
+                  </div>
+  
+                  <div class="comment_area section_space_lg pb-0">
+                    <h3 class="comment_area_title">Comments (3)</h3>
+                    <ul class="comment_list_wrap unordered_list_block">
+                      <li>
+                        <div class="comment_item">
+                          <div class="author_box">
+                            <div class="author_box_image">
+                              <img
+                                src="assets/images/meta/author_image_1.png"
+                                alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
+                              />
+                            </div>
+                            <div class="author_box_content">
+                              <h3 class="author_box_name">Kerry Banks</h3>
+                              <span class="comment_post_date">6 days ago</span>
+                            </div>
+                          </div>
+                          <p class="mb-md-0">
+                            Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus
+                            eget condimentum rhoncus, sem quam semper libero, sit
+                            amet adipiscing sem neque sed ipsum. Nam quam nunc,
+                            blandit vel, luctus pulvinar, hendrerit id, lorem. Nam
+                            eget dui. Etiam rhoncus.
+                          </p>
+                          <a class="btn_reply" href="#!">
+                            <span class="btn_icon">
+                              <i class="fa-solid fa-reply"></i>
+                            </span>
+                            <span class="btn_text">Reply</span>
+                          </a>
+                        </div>
+                        <ul class="comment_list_wrap unordered_list_block">
+                          <li>
+                            <div class="comment_item">
+                              <div class="author_box">
+                                <div class="author_box_image">
+                                  <img
+                                    src="assets/images/meta/author_image_3-min.png"
+                                    alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
+                                  />
+                                </div>
+                                <div class="author_box_content">
+                                  <h3 class="author_box_name">Dr. Merry Rose</h3>
+                                  <span class="comment_post_date"
+                                    >6 days ago</span
+                                  >
+                                </div>
+                              </div>
+                              <p class="mb-md-0">
+                                Nam eget dui. Etiam rhoncus. Maecenas tempus,
+                                tellus eget condimentum rhoncus, sem quam semper
+                                libero, sit amet adipiscing sem neque sed ipsum.
+                                Nam quam nunc, blandit vel, luctus pulvinar,
+                                hendrerit id, lorem. Nam eget dui. Etiam rhoncus.
+                              </p>
+                              <a class="btn_reply" href="#!">
+                                <span class="btn_icon">
+                                  <i class="fa-solid fa-reply"></i>
+                                </span>
+                                <span class="btn_text">Reply</span>
+                              </a>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="comment_item">
+                              <div class="author_box">
+                                <div class="author_box_image">
+                                  <img
+                                    src="assets/images/meta/author_image_2.png"
+                                    alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
+                                  />
+                                </div>
+                                <div class="author_box_content">
+                                  <h3 class="author_box_name">John Underwood</h3>
+                                  <span class="comment_post_date"
+                                    >6 days ago</span
+                                  >
+                                </div>
+                              </div>
+                              <p class="mb-md-0">
+                                Nam eget dui. Etiam rhoncus. Maecenas tempus,
+                                tellus eget condimentum rhoncus, sem quam semper
+                                libero, sit amet adipiscing sem neque sed ipsum.
+                                Nam quam nunc, blandit vel, luctus pulvinar,
+                                hendrerit id, lorem. Nam eget dui. Etiam rhoncus.
+                              </p>
+                              <a class="btn_reply" href="#!">
+                                <span class="btn_icon">
+                                  <i class="fa-solid fa-reply"></i>
+                                </span>
+                                <span class="btn_text">Reply</span>
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <div class="comment_item">
+                          <div class="author_box">
+                            <div class="author_box_image">
+                              <img
+                                src="assets/images/meta/author_image_4.png"
+                                alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
+                              />
+                            </div>
+                            <div class="author_box_content">
+                              <h3 class="author_box_name">Dennis White</h3>
+                              <span class="comment_post_date">9 days ago</span>
+                            </div>
+                          </div>
+                          <p class="mb-md-0">
+                            Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus
+                            eget condimentum rhoncus, sem quam semper libero, sit
+                            amet adipiscing sem neque sed ipsum. Nam quam nunc,
+                            blandit vel, luctus pulvinar, hendrerit id, lorem. Nam
+                            eget dui. Etiam rhoncus.
+                          </p>
+                          <a class="btn_reply" href="#!">
+                            <span class="btn_icon">
+                              <i class="fa-solid fa-reply"></i>
+                            </span>
+                            <span class="btn_text">Reply</span>
+                          </a>
+                        </div>
+                        <ul class="comment_list_wrap unordered_list_block">
+                          <li>
+                            <div class="comment_item">
+                              <div class="author_box">
+                                <div class="author_box_image">
+                                  <img
+                                    src="assets/images/meta/author_image_3-min.png"
+                                    alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
+                                  />
+                                </div>
+                                <div class="author_box_content">
+                                  <h3 class="author_box_name">Dr. Merry Rose</h3>
+                                  <span class="comment_post_date"
+                                    >6 days ago</span
+                                  >
+                                </div>
+                              </div>
+                              <p class="mb-md-0">
+                                Nam eget dui. Etiam rhoncus. Maecenas tempus,
+                                tellus eget condimentum rhoncus, sem quam semper
+                                libero, sit amet adipiscing sem neque sed ipsum.
+                                Nam quam nunc, blandit vel, luctus pulvinar,
+                                hendrerit id, lorem. Nam eget dui. Etiam rhoncus.
+                              </p>
+                              <a class="btn_reply" href="#!">
+                                <span class="btn_icon">
+                                  <i class="fa-solid fa-reply"></i>
+                                </span>
+                                <span class="btn_text">Reply</span>
+                              </a>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="comment_item">
+                              <div class="author_box">
+                                <div class="author_box_image">
+                                  <img
+                                    src="assets/images/meta/author_image_2.png"
+                                    alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
+                                  />
+                                </div>
+                                <div class="author_box_content">
+                                  <h3 class="author_box_name">John Underwood</h3>
+                                  <span class="comment_post_date"
+                                    >6 days ago</span
+                                  >
+                                </div>
+                              </div>
+                              <p class="mb-md-0">
+                                Nam eget dui. Etiam rhoncus. Maecenas tempus,
+                                tellus eget condimentum rhoncus, sem quam semper
+                                libero, sit amet adipiscing sem neque sed ipsum.
+                                Nam quam nunc, blandit vel, luctus pulvinar,
+                                hendrerit id, lorem. Nam eget dui. Etiam rhoncus.
+                              </p>
+                              <a class="btn_reply" href="#!">
+                                <span class="btn_icon">
+                                  <i class="fa-solid fa-reply"></i>
+                                </span>
+                                <span class="btn_text">Reply</span>
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+  
+                  <div class="comment_form section_space_lg pb-0">
+                    <h3 class="comment_area_title">Leave a comment</h3>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="input_name">Name</label>
+                          <input
+                            id="input_name"
+                            class="form-control"
+                            type="text"
+                            name="name"
+                            placeholder="Your name"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="input_email">Email</label>
+                          <input
+                            id="input_email"
+                            class="form-control"
+                            type="email"
+                            name="email"
+                            placeholder="Your email"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-group mb-4">
+                          <label for="input_comment">Comment</label>
+                          <textarea
+                            id="input_comment"
+                            class="form-control"
+                            name="comment"
+                            placeholder="Your message"
+                          ></textarea>
+                        </div>
+                        <div class="form-check">
+                          <input type="checkbox" id="input_checkbox" />
+                          <label for="input_checkbox">
+                            Maecenas tempus, tellus eget condimentum rhoncus, sem
+                            quam.
+                          </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                          <span class="btn_text" data-text="Post Comment">
+                            Post Comment
+                          </span>
+                          <span class="btn_icon">
+                            <i class="fa-solid fa-arrow-up-right"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-lg-4">
+                    <br>
+                    <br>
+                  <aside class="sidebar ps-lg-4">
+                    <div class="form-group">
+                      <input
+                        id="sidebar_search"
+                        class="form-control"
+                        type="search"
+                        name="search"
+                        placeholder="Search"
+                      />
+                      <button type="submit" class="input_icon">
+                        <i class="fa-regular fa-magnifying-glass"></i>
+                      </button>
+                    </div>
+                    <div class="sidebar_widget">
+                      <h3 class="sidebar_widget_title">
+                        <span class="title_icon">
+                          <img
+                            src="assets/images/site_logo/favourite_icon.svg"
+                            alt="Talking Minds - Psychotherapist Site Template"
+                          />
+                        </span>
+                        <span class="title_text">Categories</span>
+                      </h3>
+                      <ul class="post_category_list unordered_list_block">
+                        <li>
+                          <a href="#!">
+                            <span class="category_name">Relationship</span>
+                            <span class="category_counter">12</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#!">
+                            <span class="category_name">Family Problem</span>
+                            <span class="category_counter">23</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#!">
+                            <span class="category_name">Couple Problem</span>
+                            <span class="category_counter">36</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#!">
+                            <span class="category_name">Parenting</span>
+                            <span class="category_counter">16</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#!">
+                            <span class="category_name">Depression</span>
+                            <span class="category_counter">17</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#!">
+                            <span class="category_name">Business problems</span>
+                            <span class="category_counter">21</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="sidebar_widget">
+                      <h3 class="sidebar_widget_title">
+                        <span class="title_icon">
+                          <img
+                            src="assets/images/site_logo/favourite_icon.svg"
+                            alt="Talking Minds - Psychotherapist Site Template"
+                          />
+                        </span>
+                        <span class="title_text">Recommended Articles</span>
+                      </h3>
+                      <ul class="reecommended_post_group unordered_list_block">
+                        <li>
+                          <div class="blog_item_small">
+                            <div class="blog_image">
+                              <a class="blog_image_wrap" href="blog_details.html">
+                                <img
+                                  src="assets/images/blogs/small_blog_image_1.jpg"
+                                  alt="Talking Minds - Psychotherapist Site Template"
+                                />
+                              </a>
+                            </div>
+                            <div class="blog_content">
+                              <h3 class="item_title">
+                                <a href="blog_details.html">
+                                  The Importance of Parent Involvement
+                                </a>
+                              </h3>
+                              <ul class="post_meta unordered_list">
+                                <li>26 July 2023</li>
+                                <li><a href="#!">120 Views</a></li>
+                                <li><a href="#!">1 Comments</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="blog_item_small">
+                            <div class="blog_image">
+                              <a class="blog_image_wrap" href="blog_details.html">
+                                <img
+                                  src="assets/images/blogs/small_blog_image_2.jpg"
+                                  alt="Talking Minds - Psychotherapist Site Template"
+                                />
+                              </a>
+                            </div>
+                            <div class="blog_content">
+                              <h3 class="item_title">
+                                <a href="blog_details.html">
+                                  Proven techniques to improve memory and remember
+                                  more
+                                </a>
+                              </h3>
+                              <ul class="post_meta unordered_list">
+                                <li>26 July 2023</li>
+                                <li><a href="#!">120 Views</a></li>
+                                <li><a href="#!">1 Comments</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="blog_item_small">
+                            <div class="blog_image">
+                              <a class="blog_image_wrap" href="blog_details.html">
+                                <img
+                                  src="assets/images/blogs/small_blog_image_3.jpg"
+                                  alt="Talking Minds - Psychotherapist Site Template"
+                                />
+                              </a>
+                            </div>
+                            <div class="blog_content">
+                              <h3 class="item_title">
+                                <a href="blog_details.html">
+                                  Establish healthy boundaries at work
+                                </a>
+                              </h3>
+                              <ul class="post_meta unordered_list">
+                                <li>26 July 2023</li>
+                                <li><a href="#!">120 Views</a></li>
+                                <li><a href="#!">1 Comments</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="sidebar_widget">
+                      <h3 class="sidebar_widget_title">
+                        <span class="title_icon">
+                          <img
+                            src="assets/images/site_logo/favourite_icon.svg"
+                            alt="Talking Minds - Psychotherapist Site Template"
+                          />
+                        </span>
+                        <span class="title_text">Popular Tags</span>
+                      </h3>
+                      <ul class="post_tags unordered_list">
+                        <li><a href="#!">Family Problem</a></li>
+                        <li><a href="#!">Therapy</a></li>
+                        <li><a href="#!">Teenagers</a></li>
+                        <li><a href="#!">Depression</a></li>
+                        <li><a href="#!">Life Balance</a></li>
+                        <li><a href="#!">Work</a></li>
+                        <li><a href="#!">Couple Problem</a></li>
+                      </ul>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Blog Details Section - End
+          ================================================== -->  
