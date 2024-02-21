@@ -60,6 +60,7 @@ class PublicationController extends AbstractController
             'commentaires' => $commentaireRepository->findAllUnderPublication($publication),'publication'=>$publication,
         ]);
     }
+    
     #[Route('/{id}/edit', name: 'app_publication_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
     {

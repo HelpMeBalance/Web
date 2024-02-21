@@ -1,4 +1,8 @@
 {% extends 'frontClient/base.html.twig' %}
+{% block pageBannerurlretour %}
+                <li><a href="{{ path('app_blogClient', {'page': 1}) }}">Brave Chats</a></li>
+                <li>{{ title }}</li>
+ {% endblock %}
 {% block body %} 
 <!-- Blog Section - Start
         ================================================== -->
@@ -20,7 +24,7 @@
                         </div>
                         <div class="blog_content">
                           <ul class="post_category unordered_list">
-                            <li><a href="{{ path('app_blogCatClient', {'cat': publication.categorie.id, 'page': 1}) }}">{{ publication.categorie.nom }}</a></li>
+                            <li><a href="#!">Categorie next time</a></li>
                           </ul>
                           <ul class="post_meta unordered_list">
                             <li>{{ publication.dateM ? publication.dateM|date('j F Y H:i:s')  : '' }}</li>

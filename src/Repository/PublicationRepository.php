@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Publication;
+use App\Entity\SousCategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -20,6 +21,52 @@ class PublicationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Publication::class);
     }
+    public function findPaginatedbycat(int $page, int $perPage,int $cat)
+    {
+        $query =$this->createQueryBuilder('c')
+        ->join('c.Categorie','p')
+        ->andWhere('p.id = :val')
+        ->setParameter('val', $cat)
+            ->orderBy('c.vues', 'DESC')
+            ->addOrderBy('c.dateC', 'DESC')
+            ->getQuery();
+
+        return $this->paginate($query, $perPage, $page);
+    }
+    public function findbycat(int $cat)
+    {
+        return $this->createQueryBuilder('c')
+        ->join('c.Categorie','p')
+        ->andWhere('p.id = :val')
+        ->setParameter('val', $cat)
+            ->orderBy('c.vues', 'DESC')
+            ->addOrderBy('c.dateC', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findPaginatedbysouscat(int $page, int $perPage,int $souscat)
+    {
+        $query =$this->createQueryBuilder('c')
+        ->join('c.SousCategorie','p')
+        ->andWhere('p.id = :val')
+        ->setParameter('val', $souscat)
+            ->orderBy('c.vues', 'DESC')
+            ->addOrderBy('c.dateC', 'DESC')
+            ->getQuery();
+
+        return $this->paginate($query, $perPage, $page);
+    }
+    public function findbysouscat(int $souscat)
+    {
+        return $this->createQueryBuilder('c')
+        ->join('c.SousCategorie','p')
+        ->andWhere('p.id = :val')
+        ->setParameter('val', $souscat)
+            ->orderBy('c.vues', 'DESC')
+            ->addOrderBy('c.dateC', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
     public function findPaginated(int $page, int $perPage)
     {
         $query = $this->createQueryBuilder('p')
@@ -29,7 +76,6 @@ class PublicationRepository extends ServiceEntityRepository
 
         return $this->paginate($query, $perPage, $page);
     }
-
     private function paginate($query, $perPage, $page)
     {
         $offset = ($page - 1) * $perPage;
