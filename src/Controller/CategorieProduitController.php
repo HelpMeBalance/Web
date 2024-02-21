@@ -19,6 +19,11 @@ class CategorieProduitController extends AbstractController
     {
         return $this->render('categorie_produit/index.html.twig', [
             'categorie_produits' => $categorieProduitRepository->findAll(),
+            'service' => 0,
+            'part' => 3,
+            'title' => 'Store',
+            'titlepage' => 'Store- ',
+
         ]);
     }
 
@@ -71,7 +76,7 @@ class CategorieProduitController extends AbstractController
     #[Route('/{id}', name: 'app_categorie_produit_delete', methods: ['POST'])]
     public function delete(Request $request, CategorieProduit $categorieProduit, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$categorieProduit->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $categorieProduit->getId(), $request->request->get('_token'))) {
             $entityManager->remove($categorieProduit);
             $entityManager->flush();
         }

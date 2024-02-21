@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
+use App\Repository\CategorieProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,10 +15,10 @@ class HomeController extends AbstractController
     {
         return $this->render('frontClient/index.html.twig', [
             'controller_name' => 'HomeController',
-            'service'=>0,
-            'part'=>1,
-            'title'=>'',
-            'titlepage'=>'',
+            'service' => 0,
+            'part' => 1,
+            'title' => '',
+            'titlepage' => '',
         ]);
     }
     #[Route('/aboutClient', name: 'app_aboutClient')]
@@ -24,22 +26,24 @@ class HomeController extends AbstractController
     {
         return $this->render('frontClient/about.html.twig', [
             'controller_name' => 'HomeController',
-            'service'=>0,
-            'part'=>2,
-            'title'=>'Who Are We',
-            'titlepage'=>'About- ',
+            'service' => 0,
+            'part' => 2,
+            'title' => 'Who Are We',
+            'titlepage' => 'About- ',
         ]);
     }
     // 3:shop 
     #[Route('/shopClient', name: 'app_shopClient')]
-    public function shopClient(): Response
+    public function shopClient(ArticleRepository $articleRepository, CategorieProduitRepository $categorieProduitRepository): Response
     {
         return $this->render('frontClient/shop.html.twig', [
+            'articles' => $articleRepository->findAll(),
+            'categorie_produits' => $categorieProduitRepository->findAll(),
             'controller_name' => 'HomeController',
-            'service'=>0,
-            'part'=>3,
-            'title'=>'Store',
-            'titlepage'=>'Store- ',
+            'service' => 0,
+            'part' => 3,
+            'title' => 'Store',
+            'titlepage' => 'Store- ',
         ]);
     }
 
@@ -48,10 +52,10 @@ class HomeController extends AbstractController
     {
         return $this->render('frontClient/service.html.twig', [
             'controller_name' => 'HomeController',
-            'service'=>1,
-            'part'=>4,
-            'title'=>'Services',
-            'titlepage'=>'Services- ',
+            'service' => 1,
+            'part' => 4,
+            'title' => 'Services',
+            'titlepage' => 'Services- ',
         ]);
     }
     //5:blog
@@ -60,10 +64,10 @@ class HomeController extends AbstractController
     {
         return $this->render('frontClient/faq.html.twig', [
             'controller_name' => 'HomeController',
-            'service'=>1,
-            'part'=>6,
-            'title'=>'Questions Corner',
-            'titlepage'=>'FAQ- ',
+            'service' => 1,
+            'part' => 6,
+            'title' => 'Questions Corner',
+            'titlepage' => 'FAQ- ',
         ]);
     }
     #[Route('/contactClient', name: 'app_contactClient')]
@@ -71,14 +75,14 @@ class HomeController extends AbstractController
     {
         return $this->render('frontClient/contact.html.twig', [
             'controller_name' => 'HomeController',
-            'service'=>0,
-            'part'=>7,
-            'title'=>'Contact Us',
-            'titlepage'=>'Contact- ',
+            'service' => 0,
+            'part' => 7,
+            'title' => 'Contact Us',
+            'titlepage' => 'Contact- ',
         ]);
     }
 
-            ///////////////ADMIN PART/////////////////////////
+    ///////////////ADMIN PART/////////////////////////
     #[Route('/homeAdmin', name: 'app_homeAdmin')]
     public function indexAdmin(): Response
     {
