@@ -31,6 +31,18 @@ class HomeController extends AbstractController
         ]);
     }
     // 3:shop 
+    #[Route('/shopClient', name: 'app_shopClient')]
+    public function shopClient(): Response
+    {
+        return $this->render('frontClient/shop.html.twig', [
+            'controller_name' => 'HomeController',
+            'service'=>0,
+            'part'=>3,
+            'title'=>'Store',
+            'titlepage'=>'Store- ',
+        ]);
+    }
+
     #[Route('/serviceClient', name: 'app_serviceClient')]
     public function serviceClient(): Response
     {
