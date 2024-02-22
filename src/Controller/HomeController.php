@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;
+use App\Entity\Article;
 use App\Repository\CategorieProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +47,21 @@ class HomeController extends AbstractController
             'titlepage' => 'Store- ',
         ]);
     }
+    //Affichage D'un article a partir de son id (show)
+    #[Route('/shopClient/{id}', name: 'app_article_show', methods: ['GET'])]
+    public function show(Article $article, CategorieProduitRepository $categorieProduitRepository): Response
+    {
+        return $this->render('frontClient/articles_details.html.twig', [
+            'article' => $article,
+            'categorie_produits' => $categorieProduitRepository->findAll(),
+
+            'service' => 0,
+            'part' => 3,
+            'title' => 'Articles',
+            'titlepage' => 'Articles- ',
+        ]);
+    }
+
 
     #[Route('/serviceClient', name: 'app_serviceClient')]
     public function serviceClient(): Response
