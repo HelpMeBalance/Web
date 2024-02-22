@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\ArticleRepository;
 use App\Entity\Article;
+use App\Entity\CategorieProduit;
 use App\Repository\CategorieProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,9 @@ class HomeController extends AbstractController
             'titlepage' => 'About- ',
         ]);
     }
+
+
+
     // 3:shop 
     #[Route('/shopClient', name: 'app_shopClient')]
     public function shopClient(ArticleRepository $articleRepository, CategorieProduitRepository $categorieProduitRepository): Response
@@ -47,6 +51,29 @@ class HomeController extends AbstractController
             'titlepage' => 'Store- ',
         ]);
     }
+
+    // shop : Affichage catégorie 
+    #[Route('/shopClient/categrie/produit/{id}', name: 'app_categorie_produit_show', methods: ['GET'])]
+    public function showcatprod($id, ArticleRepository $articleRepository, CategorieProduitRepository $categorieProduitRepository): Response
+    {
+        $categorieProduit = $categorieProduitRepository->find($id);
+        if (!$categorieProduit) {
+            throw $this->createNotFoundException('Category not found');
+        }
+
+        // Get articles for the specified category
+        $articles = $articleRepository->findBy(['categorie' => $categorieProduit]);
+
+        return $this->render('frontClient/articlesparCat.html.twig', [
+            'categorie_produits' => $categorieProduitRepository->findAll(),
+            'articles' => $articles,
+            'service' => 0,
+            'part' => 3,
+            'title' => 'Store',
+            'titlepage' => 'Store - ',
+        ]);
+    }
+
     //Affichage D'un article a partir de son id (show)
     #[Route('/shopClient/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article, CategorieProduitRepository $categorieProduitRepository): Response
@@ -61,6 +88,7 @@ class HomeController extends AbstractController
             'titlepage' => 'Articles- ',
         ]);
     }
+
 
 
     #[Route('/serviceClient', name: 'app_serviceClient')]
