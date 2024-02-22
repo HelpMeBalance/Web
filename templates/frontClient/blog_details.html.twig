@@ -1,9 +1,18 @@
 {% extends 'frontClient/base.html.twig' %}
 {% block pageBannerurlretour %}
-                <li><a href="{{ path('app_blogClient', {'page': 1}) }}">Brave Chats</a></li>
+                <li><a href="{{ path('app_blogCatClient', {'cat': cat.id, 'page': 1}) }}">{{cat.nom}}</a></li>
                 <li>{{ title }}</li>
  {% endblock %}
 {% block body %}
+{% set role = publication.user.roles[0]|lower %}
+
+                      {% if role == 'role_user' %}
+                          {% set designation = 'patient' %}
+                      {% elseif role == 'role_psy' %}
+                          {% set designation = 'psychologist' %}
+                      {% elseif role == 'role_admin' %}
+                          {% set designation = 'administration' %}
+                      {% endif %}
  <!-- Blog Details Section - Start
         ================================================== -->
         <section class="blog_details_section ">
@@ -18,6 +27,16 @@
                   </div>
                   <div class="details_content">
                     <ul class="post_meta unordered_list mb-4">
+                      <li>
+                        {% if(publication.anonyme)%}
+                        Anonyme
+                        {% else %}
+                        {{publication.user.lastname|capitalize}} {{publication.user.firstname|capitalize}}
+                        {% endif %}
+                      </li>
+                      <li>
+                        {{ designation|capitalize }}
+                      </li>
                       <li>
                         
                         {{ publication.dateM ? publication.dateM|date('j F Y H:i:s')  : '' }} <i class="fa-regular fa-calendar-days"></i> 
@@ -44,9 +63,9 @@
                     <div class="post_tagsandshare">
                       <div class="row">
                         <div class="col-md-6">
-                          <h4 class="wrap_title">Releted Tags</h4>
+                          <h4 class="wrap_title">Explore Related Topics</h4>
                           <ul class="post_tags unordered_list">
-                            {% for souscat in souscategories %}
+                            {% for souscat in souscategoriesundercat %}
                             <li><a href="{{ path('app_blogSousCatClient', {'souscat': souscat.id, 'page': 1}) }}">{{ souscat.nom }}</a></li>
                             {% endfor %}
                           </ul>
@@ -56,31 +75,28 @@
                           <ul
                             class="social_links unordered_list justify-content-md-end"
                           >
-                            <li>
-                              <a href="#!"
-                                ><i class="fa-brands fa-facebook-f"></i
-                              ></a>
-                            </li>
-                            <li>
-                              <a href="#!"
-                                ><i class="fa-brands fa-instagram"></i
-                              ></a>
-                            </li>
-                            <li>
-                              <a href="#!"
-                                ><i class="fa-brands fa-twitter"></i
-                              ></a>
-                            </li>
-                            <li>
-                              <a href="#!"
-                                ><i class="fa-brands fa-whatsapp"></i
-                              ></a>
-                            </li>
+                          <li>
+                            {% set site_url = 'http://127.0.0.1:8000/blogDetails/' ~ publication.id %}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url|url_encode }}" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                          <a href="https://twitter.com/share?url={{ site_url|url_encode }}" target="_blank">
+                              <i class="fab fa-twitter"></i>
+                          </a>
+                      </li>
+                      <li>
+                        <a href="mailto:?subject=Check%20out%20this%20article%20on%20mental%20health&body=Hi,%0D%0A%0D%0AI%20thought%20you%20might%20be%20interested%20in%20this%20article%20about%20mental%20health:%0D%0A{{ site_url|url_encode }}" target="_blank">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </li>
+                    
                           </ul>
                         </div>
                       </div>
                     </div>
-                    <div class="prev_next_post_nav">
+                    {# <div class="prev_next_post_nav">
                       <a href="#!">
                         <span class="item_icon">
                           <i class="fa-regular fa-angle-left"></i>
@@ -99,62 +115,58 @@
                           <strong>Ways to Create Family Harmony</strong>
                         </span>
                       </a>
-                    </div>
+                    </div> #}
                   </div>
-  
-                  <div class="blog_post_author">
-                    <div class="author_image">
-                      <img
-                        src="assets/images/meta/author_image_3-min.png"
-                        alt="Talking Minds - Psychotherapist Site Template"
-                      />
-                    </div>
-                    <div class="author_content">
-                      <h4 class="author_name">Dr. Merry Rose</h4>
-                      <span class="author_designation"
-                        >Practicing psychologist, Psy. D</span
-                      >
-                      <p class="mb-0">
-                        Phasellus viverra nulla ut metus varius laoreet. Quisque
-                        Nullam quis ante. Etiam sit amet orci eget eros tincidunt.
-                        Phasellus viverra nulla ut metus varius laoreet. Quisque
-                        rutrum. Aenean imperdiet.
-                      </p>
-                    </div>
-                  </div>
-  
-                  <div class="comment_area section_space_lg pb-0">
-                    <h3 class="comment_area_title">Comments (3)</h3>
+                  {% if(publication.commentaires|length >0)%}
+                  <div class="comment_area  pb-0">
+                    <h3 class="comment_area_title">Comments ({{publication.commentaires|length}})</h3>
+                    
                     <ul class="comment_list_wrap unordered_list_block">
+
+                      {% for commentaire in publication.commentaires|sort((a, b) => b.dateM <=> a.dateM)  %}
+                      {% if (showmore == 0 and loop.index <= 3 ) or showmore==1%}
                       <li>
                         <div class="comment_item">
                           <div class="author_box">
                             <div class="author_box_image">
                               <img
-                                src="assets/images/meta/author_image_1.png"
+                              src="{{ asset("assets/images/meta/author_image_1.png") }}"
                                 alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
                               />
                             </div>
                             <div class="author_box_content">
-                              <h3 class="author_box_name">Kerry Banks</h3>
-                              <span class="comment_post_date">6 days ago</span>
+                              <h3 class="author_box_name"> {% if(commentaire.anonyme)%}
+                              Anonyme
+                              {% else %}
+                              {{commentaire.user.lastname|capitalize}} {{commentaire.user.firstname|capitalize}}
+                              {% endif %}
+                            </h3>
+                              <span class="comment_post_date"> {{commentaire.dateM|date('j F Y H:i:s') }}
+
+                                {% if (commentaire.dateM|date('j F Y H:i:s')!=commentaire.dateC|date('j F Y H:i:s'))%} <mark><b>Updated</b></mark>{% endif %}
+                              </span>
                             </div>
                           </div>
                           <p class="mb-md-0">
-                            Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus
-                            eget condimentum rhoncus, sem quam semper libero, sit
-                            amet adipiscing sem neque sed ipsum. Nam quam nunc,
-                            blandit vel, luctus pulvinar, hendrerit id, lorem. Nam
-                            eget dui. Etiam rhoncus.
+                            {{commentaire.contenu}}
                           </p>
-                          <a class="btn_reply" href="#!">
-                            <span class="btn_icon">
-                              <i class="fa-solid fa-reply"></i>
-                            </span>
-                            <span class="btn_text">Reply</span>
-                          </a>
+                          {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and commentaire.user.id== app.user.id %}
+                          <form method="post" action="{{ path('app_commentaire_delete', {'id': commentaire.id,'idp':publication.id,'showmore':0}) }}" onsubmit="return confirm('Are you sure you want to delete this Comment ?');">
+                            <input  type="hidden" name="_token" value="{{ csrf_token('delete' ~ commentaire.id) }}">
+                            <button class=" btn_reply"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                        <a style="margin-right: 30px;"class=" btn_reply " href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">
+                          <i class="fa-solid fa-edit"></i>
+                        </a>          
+                          {% endif %}
                         </div>
-                        <ul class="comment_list_wrap unordered_list_block">
+                        
+                      </li>
+                      {% endif %}
+                      {% endfor %}
+                    </ul>             
+                    {# reply to a comment list #}
+                        {# <ul class="comment_list_wrap unordered_list_block">
                           <li>
                             <div class="comment_item">
                               <div class="author_box">
@@ -217,105 +229,27 @@
                               </a>
                             </div>
                           </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <div class="comment_item">
-                          <div class="author_box">
-                            <div class="author_box_image">
-                              <img
-                                src="assets/images/meta/author_image_4.png"
-                                alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
-                              />
-                            </div>
-                            <div class="author_box_content">
-                              <h3 class="author_box_name">Dennis White</h3>
-                              <span class="comment_post_date">9 days ago</span>
-                            </div>
-                          </div>
-                          <p class="mb-md-0">
-                            Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus
-                            eget condimentum rhoncus, sem quam semper libero, sit
-                            amet adipiscing sem neque sed ipsum. Nam quam nunc,
-                            blandit vel, luctus pulvinar, hendrerit id, lorem. Nam
-                            eget dui. Etiam rhoncus.
-                          </p>
-                          <a class="btn_reply" href="#!">
-                            <span class="btn_icon">
-                              <i class="fa-solid fa-reply"></i>
-                            </span>
-                            <span class="btn_text">Reply</span>
-                          </a>
-                        </div>
-                        <ul class="comment_list_wrap unordered_list_block">
-                          <li>
-                            <div class="comment_item">
-                              <div class="author_box">
-                                <div class="author_box_image">
-                                  <img
-                                    src="assets/images/meta/author_image_3-min.png"
-                                    alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
-                                  />
-                                </div>
-                                <div class="author_box_content">
-                                  <h3 class="author_box_name">Dr. Merry Rose</h3>
-                                  <span class="comment_post_date"
-                                    >6 days ago</span
-                                  >
-                                </div>
-                              </div>
-                              <p class="mb-md-0">
-                                Nam eget dui. Etiam rhoncus. Maecenas tempus,
-                                tellus eget condimentum rhoncus, sem quam semper
-                                libero, sit amet adipiscing sem neque sed ipsum.
-                                Nam quam nunc, blandit vel, luctus pulvinar,
-                                hendrerit id, lorem. Nam eget dui. Etiam rhoncus.
-                              </p>
-                              <a class="btn_reply" href="#!">
-                                <span class="btn_icon">
-                                  <i class="fa-solid fa-reply"></i>
-                                </span>
-                                <span class="btn_text">Reply</span>
-                              </a>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="comment_item">
-                              <div class="author_box">
-                                <div class="author_box_image">
-                                  <img
-                                    src="assets/images/meta/author_image_2.png"
-                                    alt="Reviewer Image - Talking Minds - Psychotherapist Site Template"
-                                  />
-                                </div>
-                                <div class="author_box_content">
-                                  <h3 class="author_box_name">John Underwood</h3>
-                                  <span class="comment_post_date"
-                                    >6 days ago</span
-                                  >
-                                </div>
-                              </div>
-                              <p class="mb-md-0">
-                                Nam eget dui. Etiam rhoncus. Maecenas tempus,
-                                tellus eget condimentum rhoncus, sem quam semper
-                                libero, sit amet adipiscing sem neque sed ipsum.
-                                Nam quam nunc, blandit vel, luctus pulvinar,
-                                hendrerit id, lorem. Nam eget dui. Etiam rhoncus.
-                              </p>
-                              <a class="btn_reply" href="#!">
-                                <span class="btn_icon">
-                                  <i class="fa-solid fa-reply"></i>
-                                </span>
-                                <span class="btn_text">Reply</span>
-                              </a>
-                            </div>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
+                        </ul> #}
                   </div>
-  
-                  <div class="comment_form section_space_lg pb-0">
+                  {% if(showmore ==0)%}
+                  <a class="btn-link col-lg-12 justify-content-center " href="{{ path('app_blogDetails', {'id': publication.id,'showmore':1}) }}">
+                    <span class="btn_text">Show More</span>
+                    <span class="btn_icon"
+                      ><i class="fa-solid fa-arrow-down-left"></i
+                    ></span>
+                  </a>
+                  {% else %}
+                  <a class="btn-link col-lg-12 justify-content-center " href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
+                    <span class="btn_text">Show Less</span>
+                    <span class="btn_icon"
+                      ><i class="fa-solid fa-arrow-down-left"></i
+                    ></span>
+                  </a>
+                  {% endif %}
+                  {% endif %}
+                  {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and publication.comOuvert %}
+                  {{ form_start(form)}}
+                  <div class="comment_form pb-0">
                     <h3 class="comment_area_title">Leave a comment</h3>
                     <div class="row">
                       <div class="col-md-6">
@@ -326,7 +260,8 @@
                             class="form-control"
                             type="text"
                             name="name"
-                            placeholder="Your name"
+                            placeholder="{{ app.user.firstname ~ ' ' ~ app.user.lastname }}"
+                            disabled
                           />
                         </div>
                       </div>
@@ -338,26 +273,25 @@
                             class="form-control"
                             type="email"
                             name="email"
-                            placeholder="Your email"
+                            placeholder={{ app.user.email }}
+                            disabled
                           />
                         </div>
                       </div>
                       <div class="col-12">
                         <div class="form-group mb-4">
                           <label for="input_comment">Comment</label>
-                          <textarea
-                            id="input_comment"
-                            class="form-control"
-                            name="comment"
-                            placeholder="Your message"
-                          ></textarea>
+                          {{ form_widget(form.contenu,{'attr' : {'class' : 'form-control','placeholder' : 'Your message'}})}}
                         </div>
+                      
                         <div class="form-check">
-                          <input type="checkbox" id="input_checkbox" />
+                          {{ form_widget(form.anonyme,{'attr' : {'class' : 'checkbox'}})}}
                           <label for="input_checkbox">
-                            Maecenas tempus, tellus eget condimentum rhoncus, sem
-                            quam.
+                           Post as Anonyme
                           </label>
+                        </div>
+                        <div >
+                          {{ form_widget(form.User,{'attr' : {'class' : 'd-none'},'value': app.user.id})}}
                         </div>
                         <button type="submit" class="btn btn-primary">
                           <span class="btn_text" data-text="Post Comment">
@@ -370,11 +304,11 @@
                       </div>
                     </div>
                   </div>
+                  {{ form_end(form) }}
+                  {% endif %}
                 </div>
   
                 <div class="col-lg-4">
-                    <br>
-                    <br>
                   <aside class="sidebar ps-lg-4">
                     <div class="form-group">
                       <input
@@ -382,9 +316,10 @@
                         class="form-control"
                         type="search"
                         name="search"
-                        placeholder="Search"
+                        placeholder="Search (coming soon)"
+                        disabled
                       />
-                      <button type="submit" class="input_icon">
+                      <button type="submit" class="input_icon" disabled>
                         <i class="fa-regular fa-magnifying-glass"></i>
                       </button>
                     </div>
@@ -392,155 +327,91 @@
                       <h3 class="sidebar_widget_title">
                         <span class="title_icon">
                           <img
-                            src="assets/images/site_logo/favourite_icon.svg"
-                            alt="Talking Minds - Psychotherapist Site Template"
+                            src="{{asset('assets/images/site_logo/favourite_icon.svg')}}"
+                            alt="help me balance"
                           />
                         </span>
                         <span class="title_text">Categories</span>
                       </h3>
                       <ul class="post_category_list unordered_list_block">
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Relationship</span>
-                            <span class="category_counter">12</span>
+                        {% set sortedCategories = categories|sort((a, b) => (a.publications|length) < (b.publications|length)) %}
+                        {% for categorie in sortedCategories %}
+                        <li  >
+                          <a href="{{ path('app_blogCatClient', {'cat': categorie.id, 'page': 1}) }}" >
+                            <span class="category_name" >{% if categorie.id == cat.id %}<mark>{{categorie.nom }}</mark>{% else %}{{categorie.nom }} {% endif %}</span>                     
+                            {% if categorie.publications|length == 0 %}
+                            <span class="category_counter">New</span> 
+                            {% else %}
+                            <span class="category_counter">{{ categorie.publications|length }}</span>
+                            {% endif %}
                           </a>
                         </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Family Problem</span>
-                            <span class="category_counter">23</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Couple Problem</span>
-                            <span class="category_counter">36</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Parenting</span>
-                            <span class="category_counter">16</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Depression</span>
-                            <span class="category_counter">17</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Business problems</span>
-                            <span class="category_counter">21</span>
-                          </a>
-                        </li>
+                        {% endfor %}
                       </ul>
                     </div>
                     <div class="sidebar_widget">
                       <h3 class="sidebar_widget_title">
                         <span class="title_icon">
                           <img
-                            src="assets/images/site_logo/favourite_icon.svg"
-                            alt="Talking Minds - Psychotherapist Site Template"
+                            src="{{asset('assets/images/site_logo/favourite_icon.svg')}}"
+                            alt="help me balance"
                           />
                         </span>
-                        <span class="title_text">Recommended Articles</span>
+                        <span class="title_text">Explore More</span>
                       </h3>
                       <ul class="reecommended_post_group unordered_list_block">
+                        {% for publication in reccpublications|slice(0, 3) %}
                         <li>
                           <div class="blog_item_small">
                             <div class="blog_image">
-                              <a class="blog_image_wrap" href="blog_details.html">
+                              <a class="blog_image_wrap" href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
                                 <img
-                                  src="assets/images/blogs/small_blog_image_1.jpg"
-                                  alt="Talking Minds - Psychotherapist Site Template"
+                                src="{{ asset(publication.image) }}"
+                                alt="HelpMeBalance"
                                 />
                               </a>
                             </div>
                             <div class="blog_content">
                               <h3 class="item_title">
-                                <a href="blog_details.html">
-                                  The Importance of Parent Involvement
+                                <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
+                                    {{ publication.titre }}
                                 </a>
                               </h3>
                               <ul class="post_meta unordered_list">
-                                <li>26 July 2023</li>
-                                <li><a href="#!">120 Views</a></li>
-                                <li><a href="#!">1 Comments</a></li>
-                              </ul>
+                                <li>{{ publication.dateM ? publication.dateM|date('j F Y H:i:s')  : '' }}</li>
+                                <li>{{ publication.vues }} <i class="fa-solid fa-eye"></i></li>
+                                <li>
+                                  {% set commentCount = commentaireRepository.findAllUnderPublication(publication)|length %}
+                                  {% if publication.comOuvert %}
+                                      {% if commentCount > 0 %}
+                                          <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">{{ commentCount }} <i class="fa-solid fa-comment"></i></a>
+                                      {% else %}
+                                      <i class="fa-duotone fa-empty-set"></i> Com..
+                                      {% endif %}
+                                  {% else %}
+                                      <i class="fas fa-lock"></i> Com..
+                                  {% endif %}
+                              </li>                              </ul>
                             </div>
                           </div>
                         </li>
-                        <li>
-                          <div class="blog_item_small">
-                            <div class="blog_image">
-                              <a class="blog_image_wrap" href="blog_details.html">
-                                <img
-                                  src="assets/images/blogs/small_blog_image_2.jpg"
-                                  alt="Talking Minds - Psychotherapist Site Template"
-                                />
-                              </a>
-                            </div>
-                            <div class="blog_content">
-                              <h3 class="item_title">
-                                <a href="blog_details.html">
-                                  Proven techniques to improve memory and remember
-                                  more
-                                </a>
-                              </h3>
-                              <ul class="post_meta unordered_list">
-                                <li>26 July 2023</li>
-                                <li><a href="#!">120 Views</a></li>
-                                <li><a href="#!">1 Comments</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="blog_item_small">
-                            <div class="blog_image">
-                              <a class="blog_image_wrap" href="blog_details.html">
-                                <img
-                                  src="assets/images/blogs/small_blog_image_3.jpg"
-                                  alt="Talking Minds - Psychotherapist Site Template"
-                                />
-                              </a>
-                            </div>
-                            <div class="blog_content">
-                              <h3 class="item_title">
-                                <a href="blog_details.html">
-                                  Establish healthy boundaries at work
-                                </a>
-                              </h3>
-                              <ul class="post_meta unordered_list">
-                                <li>26 July 2023</li>
-                                <li><a href="#!">120 Views</a></li>
-                                <li><a href="#!">1 Comments</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
+                        {% endfor %}
                       </ul>
                     </div>
                     <div class="sidebar_widget">
                       <h3 class="sidebar_widget_title">
                         <span class="title_icon">
                           <img
-                            src="assets/images/site_logo/favourite_icon.svg"
+                            src="{{asset('assets/images/site_logo/favourite_icon.svg')}}"
                             alt="Talking Minds - Psychotherapist Site Template"
                           />
                         </span>
-                        <span class="title_text">Popular Tags</span>
+                        <span class="title_text">Explore Related Topics</span>
                       </h3>
                       <ul class="post_tags unordered_list">
-                        <li><a href="#!">Family Problem</a></li>
-                        <li><a href="#!">Therapy</a></li>
-                        <li><a href="#!">Teenagers</a></li>
-                        <li><a href="#!">Depression</a></li>
-                        <li><a href="#!">Life Balance</a></li>
-                        <li><a href="#!">Work</a></li>
-                        <li><a href="#!">Couple Problem</a></li>
+                        {% for souscat in souscategories %}
+                        <li><a href="{{ path('app_blogSousCatClient', {'souscat': souscat.id, 'page': 1}) }}">{{ souscat.nom }}</a></li>
+                        {% endfor %}
                       </ul>
                     </div>
                   </aside>
@@ -548,107 +419,8 @@
               </div>
             </div>
           </section>
+          <br>
           <!-- Blog Details Section - End
           ================================================== -->  
 
-
-
-
-
-
-
-{# 
-
-<h1>Commentaire index</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id  </th>
-                <th>Contenu  </th>
-                <th>Anonyme  </th>
-                <th>Likes  </th>
-                <th>Valide  </th>
-                <th>DateC  </th>
-                <th>DateM  </th>
-                <th>actions  </th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commentaire in commentaires %}
-            <tr>
-                <td>{{ commentaire.id }}</td>
-                <td>{{ commentaire.contenu }}</td>
-                <td>{{ commentaire.anonyme ? 'Yes' : 'No' }}</td>
-                <td>{{ commentaire.likes }}</td>
-                <td>{{ commentaire.valide ? 'Yes' : 'No' }}</td>
-                <td>{{ commentaire.dateC ? commentaire.dateC|date('d-M-y H:i:s') : '' }}</td>
-                <td>{{ commentaire.dateM ? commentaire.dateM|date('d-M-y H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}">show</a>
-                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('app_publication_show', {'id': publication.id}) }}"><strong>show publication </strong></a>
-    <a href="{{ path('app_commentaire_new', {'idPublication': publication.id}) }}">Create new</a>
-    <h1>Publication</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ publication.id }}</td>
-            </tr>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ publication.contenu }}</td>
-            </tr>
-            <tr>
-                <th>ComOuvert</th>
-                <td>{{ publication.comOuvert ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Nombre Commentaire</th>
-                <td>{{ nbcom }}</td>
-            </tr>
-            <tr>
-                <th>Anonyme</th>
-                <td>{{ publication.anonyme ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Likes</th>
-                <td>{{ publication.likes }}</td>
-            </tr>
-            <tr>
-                <th>Valide</th>
-                <td>{{ publication.valide ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>DateC</th>
-                <td>{{ publication.dateC ? publication.dateC|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateM</th>
-                <td>{{ publication.dateM ? publication.dateM|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Vues</th>
-                <td>{{ publication.vues }}</td>
-            </tr>
-        </tbody>
-    </table>
-    {% if (like==0) %}
-    <a href="{{ path('app_publication_like', {'id': publication.id}) }}">Like</a>
-    {%else %}
-    <a href="{{ path('app_publication_dislike', {'id': publication.id}) }}">Dislike</a>
-    {% endif %}
-    <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
-    <a href="{{ path('app_publication_index') }}">back to list</a>
-    {{ include('publication/_delete_form.html.twig') }} #}
 {% endblock %}
