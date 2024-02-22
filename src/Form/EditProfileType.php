@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class EditProfileType extends AbstractType
 {
@@ -46,6 +47,11 @@ class EditProfileType extends AbstractType
                             'max' => 50,
                         ]),
                     ],
+            ])
+            ->add('profilePictureFile', FileType::class, [
+                'label' => 'Profile Picture',
+                'mapped' => false, // This field is not mapped to any entity property
+                'required' => false,
             ])
         ;
     }
