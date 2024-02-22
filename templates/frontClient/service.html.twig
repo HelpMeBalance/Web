@@ -1,1 +1,118 @@
 {% extends 'frontClient/base.html.twig' %}
+{% block body %}
+<div class="jumbotron jumbotron-fluid position-relative overlay-bottom " style="margin-bottom: 90px; ">
+    <div class="multi-step-form">
+      <div class="progress-container row mb-5 d-none d-sm-flex px-5">
+        <div class="progress col p-0" style="height: 5px;">
+          <div class="progress-bar" data-index=1 role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #f5f5f5; color: #c1c998; padding-top: 13px; position: absolute; margin-left: -25px;" data-index=1 class="progress-icon shadow-sm active">
+              <i class="material-icons"> enhanced_encryption </i>
+            </div>
+          </div>
+        </div>
+        <div class="progress col p-0" style="height: 5px;">
+          <div class="progress-bar" data-index=2 role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #f8f8ff; color: #c1c9a9; padding-top: 13px; position: absolute; margin-left: -25px;" data-index=2 class="progress-icon shadow-sm">
+              <i class="material-icons"> people </i>
+            </div>
+          </div>
+        </div>
+        <div class="progress col p-0" style="height: 5px;">
+          <div class="progress-bar" data-index=3 role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #f5f5f5; color: #c1c998; padding-top: 13px; position: absolute; margin-left: -25px;" data-index=3 class="progress-icon shadow-sm">
+              <i class="material-icons"> info_outline </i>
+            </div>
+
+            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #f8f8ff; color: #c1c9a9; padding-top: 13px; position: absolute; margin-left: 150px;" data-index=4 class="progress-icon shadow-sm">
+              <i class="material-icons"> check </i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-container shadow">
+        <h4><b>Bienvenue Parmis nous</b> </h4><small class="text-muted" class="navbar-nav mx-auto py-0">
+                                                        Vous avez déjà un Compte ?
+                                                        <a href="#" style="color: #c1c998" >Connectez-Vous</a></small>
+        <div>
+          <form class="needs-validation" novalidate name="form" method="POST" action="addedclient.php" >
+            <fieldset data-index=1 class="ms-step-1 active seen">
+            <div class="error-box">
+        <span class="error-message" id="error"></span>
+            </div>
+              <div class="form-row">
+                <div class="form-group floating-label-container col-md-6">
+                <label for="inputCin1" class="floating-label">N°Cin</label>
+                  <input type="number" min="10000000" max="99999999"name="cin" class="form-control" id="inputCin1"required>
+                </div>
+                <div class="form-group floating-label-container col-md-6">             
+                  <label for="inputEmail1" class="floating-label">Email</label>
+                  <input type="email" name="email" class="form-control" id="email" required >
+                </div>
+              </div>
+              <div class="form-group floating-label-container">
+                <label for="mdp" class="floating-label">Votre Mot de passe</label>
+                <input type="password" name="mdp" id="mdp" required class="form-control"      pattern="[a-zA-Z0-9]{8,12}$"oncopy="return false" onpaste="return false" oncut="return false" >
+              </div>
+              <div class="form-group floating-label-container">
+                <label for="password" class="floating-label">Confirmer Votre Mot de passe</label>
+                <input type="password" name="mdpC" required class="form-control"  pattern="[a-zA-Z0-9]{8,12}$" oncopy="return false" onpaste="return false" oncut="return false" id="mdpC" autocomplete="new-password" >
+              </div>
+              <div class="form-group floating-label-container">
+              <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
+              J'accepte les <a href="printterms.php" download="Termes_et_Conditions.pdf" style="color: #c1c998">Termes et Conditions</a>
+              </div>
+              <!-- modal ken khdem -->
+              
+              <button type="submit" class="next btn btn-outline-dark mt-2" style="border-radius: 25px;"> Suivant </button>
+            </fieldset>
+            <fieldset data-index=2 class="ms-step-2">
+            <div class="form-group floating-label-container">
+                <label for="inputAddress11" class="floating-label">Nom</label>
+                <input type="text"  name="nom" id="nom" class="form-control" required pattern="[A-Za-z]+">
+              </div>
+              <div class="form-group floating-label-container">
+                <label for="inputAddress12" class="floating-label">Prénom</label>
+                <input type="text" class="form-control"  name="prenom" id="prenom" required pattern="[A-Za-z]+">
+              </div>
+              <div class="form-row">
+              <legend class="col-form-label col-sm-4 pt-0"></legend>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="sexe" id="femme" value="0" checked>
+        <label class="form-check-label" for="femme">
+            Femme   
+        </label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="sexe" id="homme" value="1">
+        <label class="form-check-label" for="homme">
+            Homme
+        </label>
+    </div>
+            </div>
+          <button type="submit" class="next btn btn-outline-dark mt-2" style="border-radius: 25px;"> Suivant </button>
+        </fieldset>
+        <fieldset data-index=3 class="ms-step-3">
+        <div class="error-box">
+    <span class="error-message" id="error2"></span>
+        </div>
+          <div class="form-group floating-label-container">
+            <label for="inputAddress31" class="floating-label">Numero De Téléphone</label>
+            <input type="number" min="10000000" max="99999999" class="form-control" name="phone" id="phone" required>
+          </div>
+          <div class="form-group floating-label-container">
+            <label for="inputAddress32" class="floating-label"></label>
+            <input type="date" name="dob" id="dob" class="form-control" max="<?php echo date('Y-m-d', strtotime('-18 years')); ?>" required>
+          </div>
+          <button type="submit" class="next btn btn-outline-dark mt-2" style="border-radius: 25px;" onclick="return false;"> Suivant </button>
+        </fieldset>
+        <fieldset data-index=4 class="ms-step-4">
+          <p>
+          Êtes-vous certain(e) que toutes les modifications sont correctes ? Veuillez confirmer que ces changements sont exacts, puis continuez pour soumettre le formulaire.
+          </p>
+          <button type="submit" class="btn btn-outline-danger mt-2" style="border-radius: 25px;"> Confirmer </button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
