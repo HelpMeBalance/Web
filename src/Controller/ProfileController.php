@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\EditProfileType;
 use App\Form\ChangePasswordFormType;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[Route('/profile')]
 class ProfileController extends AbstractController
@@ -37,7 +39,7 @@ class ProfileController extends AbstractController
     }
 
     #[Route(path: '/edit', name: 'profile_edit')]
-    public function edit(Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, ParameterBagInterface $params): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -47,14 +49,33 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            $this->addFlash('message', 'Profil mis à jour');
-            return $this->redirectToRoute('profile');
+        // Handle file upload
+        $profilePictureFile = $form->get('profilePictureFile')->getData(); // Ensure 'profilePictureFile' matches your form field name
+        if ($profilePictureFile) {
+            $originalFilename = pathinfo($profilePictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$profilePictureFile->guessExtension();
+
+            try {
+                $profilePictureFile->move(
+                    $params->get('profile_pictures_directory'), // Make sure this parameter is defined in your services.yaml
+                    $newFilename
+                );
+                $user->setProfilePicture($newFilename); // Update the entity with the new filename
+            } catch (FileException $e) {
+                // Handle exception if something happens during file upload
+            }
+        }
+
+        $entityManager->flush();
+        $this->addFlash('message', 'Profile updated successfully.');
+        return $this->redirectToRoute('profile');
         }
 
 
         return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
+            'profilePictureUrl' => '/uploads/profile_pictures/' . $user->getProfilePicture(), // Adjust the path as necessary
             'service'=>0,
             'part'=>7,
             'title'=>'Edit Profile',

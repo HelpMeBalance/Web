@@ -49,6 +49,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Formulaire $formulaire = null;
+  
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture = null;
+
+    // Temporary store the file in the object
+    #[Assert\File(
+        maxSize: '1024k',
+        mimeTypes: ['image/jpeg', 'image/png'],
+    )]
+    private ?File $profilePictureFile = null;
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
+    public function getProfilePictureFile(): ?File
+    {
+        return $this->profilePictureFile;
+    }
+
+    public function setProfilePictureFile(?File $profilePictureFile = null): self
+    {
+        $this->profilePictureFile = $profilePictureFile;
+        if ($profilePictureFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            // Update an "updatedAt" field here, if you have one
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+        return $this;
+    }
+        
 
     public function __construct()
     {
