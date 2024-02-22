@@ -1,64 +1,60 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Question{% endblock %}
-
+{% extends 'frontClient/base.html.twig' %}
 {% block body %}
-    <h1>Question</h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow">
+                    <div class="card-body p-2">
+                        <h3 class="card-title text-center mb-4">{{ question.question }}</h3>
+                        {% for reponse in Listrepons %}
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <div class="col-lg-8 mx-auto">
+                                        <div class="card shadow">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-evenly p-5">
+                                                {{ reponse.reponse }}
+                                                <form action="{{ path('app_reponse_edit', {'id': reponse.id, 'idq':question.id}) }}">
+                                                    <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                                                        <i class="fa-solid fa-edit"></i>
+                                                    </button></br>
+                                                </form>
+                                                <form action="{{ path('app_reponse_delete', {'id': reponse.id, 'idq':question.id}) }}">
+                                                    <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button></br>
+                                                </form>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="d-flex justify-content-evenly p-5">
+                            <form action="{{ path('app_question_index') }}">
+                                <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                                    <i class="fa-solid fa-backward"></i>
+                                </button></br>
+                            </form>
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-    <div class="flex justify-center items-center h-screen bg-blue-200">   
-        <div class="w-full max-w-md bg-gray-200 p-4 rounded-md">
-            <div class="mb-4">
-    <table border="1">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ question.id }}</td>
+                        <div class="mb-4">
+                            <p class="block text-gray-700 text-sm font-bold mb-2">new Response</p>
+                            {{ form_widget(form.reponse, {'attr': {'class': 'form-control px-4'}}) }}
+                            {# {{ form_errors(form.reponse, {'attr': {'class': 'text-red-200 bg-red-400'}}) }} #}
+                        </div>
 
-            </tr>
-            <tr>
-                <th>Question</th>
-                <td>{{ question.question }}</td>
-            </tr>
 
-        </tbody>
-    </table>
+                        <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                            {{ button_label|default('Save') }}
+                        </button>
+                            {{ form_end(form) }}</br>
+
+                    </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-4">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Reponse</th>
-                <th>actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for reponse in Listrepons %}
-                <tr>
-                    <td>{{ reponse.id }}</td>
-                    <td>{{ reponse.reponse }}</td>
-                    <td>
-                        <a href="{{ path('app_reponse_show', {'id': reponse.id}) }}">show</a>
-                        <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">edit</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
         </div>
-
-        <a href="{{ path('app_reponse_new',{'idq': question.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Create new</a></br>
-
-    <a href="{{ path('app_question_index') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">back to list</a></br>
-
-    <a href="{{ path('app_question_edit', {'id': question.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">edit</a></br>
-
-    {{ include('question/_delete_form.html.twig') }}
-</div>
-</div>
-    {% endblock %}
+    </div>
+{% endblock %}
