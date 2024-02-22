@@ -23,26 +23,34 @@ class ReponseController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{idq}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
-    public function new($idq,Request $request, EntityManagerInterface $entityManager,QuestionRepository $rep): Response
-    {
-        $reponse = new Reponse();
-        $form = $this->createForm(ReponseType::class, $reponse);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $reponse->setQuestion($rep->find($idq));
-            $entityManager->persist($reponse);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_question_show', ['id'=>$reponse->getQuestion()->getId()], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('reponse/new.html.twig', [
-            'reponse' => $reponse,
-            'form' => $form,
-        ]);
-    }
+//    #[Route('/new/{dq}', name: 'app_reponse_new')]
+//    public function new(Request $request, EntityManagerInterface $entityManager, QuestionRepository $qrep, ReponseRepository $rep, $dq): Response
+//    {
+//        $repos = $rep->findBy(['question' => $qrep->find($dq)]);
+//        $reponse = new Reponse();
+//        $form = $this->createForm(ReponseType::class, $reponse);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $reponse->setQuestion($qrep->find($dq));
+//            $entityManager->persist($reponse);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_question_show', ['id' => $dq]);
+//        }
+//
+//        return $this->render('question/show.html.twig', [
+//            'question' => $qrep->find($dq),
+//            'Listrepons' => $repos,
+//            'controller_name' => 'questionController',
+//            'form' => $form,
+//            'service' => 1,
+//            'part' => 5,
+//            'title' => "question",
+//            'titlepage' => 'question - ',
+//        ]);
+//
+//    }
 
     #[Route('/{id}', name: 'app_reponse_show', methods: ['GET'])]
     public function show(Reponse $reponse): Response
@@ -52,33 +60,35 @@ class ReponseController extends AbstractController
         ]);
     }
 
-#[Route('/{id}/edit/{idq}', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager, $idq): Response
-{
-    $form = $this->createForm(ReponseType::class, $reponse);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_question_show', ['id'=>$idq], Response::HTTP_SEE_OTHER);
-    }
-
-    return $this->render('reponse/edit.html.twig', [
-        'reponse' => $reponse,
-        'form' => $form,
-        'idq' => $idq,
-    ]);
-}
-
-    #[Route('/{id}', name: 'app_reponse_delete', methods: ['POST'])]
-    public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/{idq}/edit', name: 'app_reponse_edit')]
+    public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager, $idq): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$reponse->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($reponse);
+        $form = $this->createForm(ReponseType::class, $reponse);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_question_show', ['id'=>$idq], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_reponse_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render('reponse/edit.html.twig', [
+            'reponse' => $reponse,
+            'form' => $form,
+            'controller_name' => 'questionController',
+            'service' => 1,
+            'part' => 5,
+            'title' => "question" ,
+            'titlepage' => 'question - ',
+        ]);
+    }
+
+    #[Route('/{id}/{idq}', name: 'app_reponse_delete')]
+    public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager, $idq): Response
+    {
+            $entityManager->remove($reponse);
+            $entityManager->flush();
+
+        return $this->redirectToRoute('app_question_show', ['id'=>$idq], Response::HTTP_SEE_OTHER);
     }
 }

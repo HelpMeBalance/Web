@@ -47,6 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Please enter your last name.')]
     private ?string $lastname = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Formulaire $formulaire = null;
+  
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profilePicture = null;
 
@@ -242,6 +245,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getFormulaire(): ?Formulaire
+    {
+        return $this->formulaire;
+    }
+
+    public function setFormulaire(?Formulaire $formulaire): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($formulaire === null && $this->formulaire !== null) {
+            $this->formulaire->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($formulaire !== null && $formulaire->getUser() !== $this) {
+            $formulaire->setUser($this);
+        }
+
+        $this->formulaire = $formulaire;
 
         return $this;
     }

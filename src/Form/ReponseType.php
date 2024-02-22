@@ -15,10 +15,7 @@ class ReponseType extends AbstractType
     {
         $builder
             ->add('reponse')
-            ->add('question', EntityType::class, [
-                'class' => Question::class,
-'choice_label' => 'question',
-            ])
+
         ;
     }
 

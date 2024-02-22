@@ -20,12 +20,21 @@ class Question
     #[Assert\NotBlank(message: 'Please enter a Question.')]    
     private ?string $question = null;
 
-    #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'question')]
+    #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'question',cascade: ['persist', 'remove'])]
+
     private Collection $reponse;
+
+    #[ORM\ManyToMany(targetEntity: Formulaire::class, mappedBy: 'Question')]
+    private Collection $Reponse;
+
+    #[ORM\ManyToMany(targetEntity: Formulaire::class, mappedBy: 'Question')]
+    private Collection $formulaires;
 
     public function __construct()
     {
         $this->reponse = new ArrayCollection();
+        $this->Reponse = new ArrayCollection();
+        $this->formulaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,6 +79,33 @@ class Question
             if ($reponse->getQuestion() === $this) {
                 $reponse->setQuestion(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Formulaire>
+     */
+    public function getFormulaires(): Collection
+    {
+        return $this->formulaires;
+    }
+
+    public function addFormulaire(Formulaire $formulaire): static
+    {
+        if (!$this->formulaires->contains($formulaire)) {
+            $this->formulaires->add($formulaire);
+            $formulaire->addQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormulaire(Formulaire $formulaire): static
+    {
+        if ($this->formulaires->removeElement($formulaire)) {
+            $formulaire->removeQuestion($this);
         }
 
         return $this;
