@@ -94,14 +94,14 @@ class CommentaireController extends AbstractController
             'commentaire' => $commentaire,'like'=>0
         ]);
     }
-    #[Route('/{id}', name: 'app_commentaire_delete', methods: ['POST'])]
-    public function delete(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/{idp}/{showmore}', name: 'app_commentaire_delete', methods: ['POST'])]
+    public function delete(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager,int $showmore,int $idp): Response
     {
         if ($this->isCsrfTokenValid('delete'.$commentaire->getId(), $request->request->get('_token'))) {
             $entityManager->remove($commentaire);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_blogDetails', ['id'=>$idp,'showmore'=>$showmore], Response::HTTP_SEE_OTHER);
     }
 }

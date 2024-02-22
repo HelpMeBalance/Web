@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                       <div class="blog_item">
                         <div class="blog_image">
-                          <a class="blog_image_wrap" href="{{ path('app_blogDetails', {'id': publication.id}) }}">
+                          <a class="blog_image_wrap" href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
                             <img
                               src="{{ asset(publication.image) }}"
                               alt="HelpMeBalance"
@@ -24,7 +24,7 @@
                         </div>
                         <div class="blog_content">
                           <ul class="post_category unordered_list">
-                            <li><a href="#!">Categorie next time</a></li>
+                            <li><a href="{{ path('app_blogSousCatClient', {'souscat': publication.souscategorie.id, 'page': 1}) }}">{{ publication.souscategorie.nom }}</a></li>
                           </ul>
                           <ul class="post_meta unordered_list">
                             <li>{{ publication.dateM ? publication.dateM|date('j F Y H:i:s')  : '' }}</li>
@@ -33,7 +33,7 @@
                                 {% set commentCount = commentaireRepository.findAllUnderPublication(publication)|length %}
                                 {% if publication.comOuvert %}
                                     {% if commentCount > 0 %}
-                                        <a href="{{ path('app_blogDetails', {'id': publication.id}) }}">{{ commentCount }} <i class="fa-solid fa-comment"></i></a>
+                                        <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">{{ commentCount }} <i class="fa-solid fa-comment"></i></a>
                                     {% else %}
                                     <i class="fa-duotone fa-empty-set"></i> Com..
                                     {% endif %}
@@ -43,7 +43,7 @@
                             </li>
                         </ul>
                           <h3 class="item_title">
-                            <a href="{{ path('app_blogDetails', {'id': publication.id}) }}">
+                            <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
                                 {{ publication.titre }}
                             </a>
                           </h3>
@@ -51,7 +51,7 @@
                             {{ publication.contenu|slice(0, 40) ~ (publication.contenu|length > 40 ? '...' : '') }}
 
                           </p>
-                          <a class="btn-link" href="{{ path('app_blogDetails', {'id': publication.id}) }}">
+                          <a class="btn-link" href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
                             <span class="btn_text">Read More</span>
                             <span class="btn_icon"
                               ><i class="fa-solid fa-arrow-up-right"></i
@@ -61,16 +61,7 @@
                       </div>
                     </div>
                     {% endfor %}
-                  </div>
-                  <div class="pagination_wrap  section_space_lg">
-                    <ul class="pagination_nav unordered_list justify-content-center">
-                        {% for page in range(1, totalPages) %}
-                        <li {% if curentPage == page %} class="active" {% endif %}>
-                            <a href="{{ path('app_blogClient', {'page': page}) }}">{{ page }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                  </div>                
                 </div>
   
                 <div class="col-lg-4">
@@ -81,9 +72,10 @@
                         class="form-control"
                         type="search"
                         name="search"
-                        placeholder="Search"
+                        placeholder="Search (coming soon)"
+                        disabled
                       />
-                      <button type="submit" class="input_icon">
+                      <button type="submit" class="input_icon" disabled>
                         <i class="fa-regular fa-magnifying-glass"></i>
                       </button>
                     </div>
@@ -92,48 +84,25 @@
                         <span class="title_icon">
                           <img
                             src="{{asset('assets/images/site_logo/favourite_icon.svg')}}"
-                            alt="Talking Minds - Psychotherapist Site Template"
+                            alt="help me balance"
                           />
                         </span>
                         <span class="title_text">Categories</span>
                       </h3>
                       <ul class="post_category_list unordered_list_block">
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Relationship</span>
-                            <span class="category_counter">12</span>
+                        {% set sortedCategories = categories|sort((a, b) => (a.publications|length) < (b.publications|length)) %}
+                        {% for categorie in sortedCategories %}
+                        <li  >
+                          <a href="{{ path('app_blogCatClient', {'cat': categorie.id, 'page': 1}) }}" >
+                            <span class="category_name" >{% if categorie.id == cat.id %}<mark>{{categorie.nom }}</mark>{% else %}{{categorie.nom }} {% endif %}</span>                     
+                            {% if categorie.publications|length == 0 %}
+                            <span class="category_counter">New</span> 
+                            {% else %}
+                            <span class="category_counter">{{ categorie.publications|length }}</span>
+                            {% endif %}
                           </a>
                         </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Family Problem</span>
-                            <span class="category_counter">23</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Couple Problem</span>
-                            <span class="category_counter">36</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Parenting</span>
-                            <span class="category_counter">16</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Depression</span>
-                            <span class="category_counter">17</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#!">
-                            <span class="category_name">Business problems</span>
-                            <span class="category_counter">21</span>
-                          </a>
-                        </li>
+                        {% endfor %}
                       </ul>
                     </div>
                     <div class="sidebar_widget">
@@ -141,85 +110,48 @@
                         <span class="title_icon">
                           <img
                             src="{{asset('assets/images/site_logo/favourite_icon.svg')}}"
-                            alt="Talking Minds - Psychotherapist Site Template"
+                            alt="help me balance"
                           />
                         </span>
-                        <span class="title_text">Recommended Articles</span>
+                        <span class="title_text">Explore More</span>
                       </h3>
                       <ul class="reecommended_post_group unordered_list_block">
+                        {% for publication in reccpublications|slice(0, 3) %}
                         <li>
                           <div class="blog_item_small">
                             <div class="blog_image">
-                              <a class="blog_image_wrap" href="blog_details.html">
+                              <a class="blog_image_wrap" href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
                                 <img
-                                  src="{{asset('assets/images/blogs/small_blog_image_1.jpg')}}"
-                                  alt="Talking Minds - Psychotherapist Site Template"
+                                src="{{ asset(publication.image) }}"
+                                alt="HelpMeBalance"
                                 />
                               </a>
                             </div>
                             <div class="blog_content">
                               <h3 class="item_title">
-                                <a href="blog_details.html">
-                                  The Importance of Parent Involvement
+                                <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
+                                    {{ publication.titre }}
                                 </a>
                               </h3>
                               <ul class="post_meta unordered_list">
-                                <li>26 July 2023</li>
-                                <li><a href="#!">120 Views</a></li>
-                                <li><a href="#!">1 Comments</a></li>
-                              </ul>
+                                <li>{{ publication.dateM ? publication.dateM|date('j F Y H:i:s')  : '' }}</li>
+                                <li>{{ publication.vues }} <i class="fa-solid fa-eye"></i></li>
+                                <li>
+                                  {% set commentCount = commentaireRepository.findAllUnderPublication(publication)|length %}
+                                  {% if publication.comOuvert %}
+                                      {% if commentCount > 0 %}
+                                          <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">{{ commentCount }} <i class="fa-solid fa-comment"></i></a>
+                                      {% else %}
+                                      <i class="fa-duotone fa-empty-set"></i> Com..
+                                      {% endif %}
+                                  {% else %}
+                                      <i class="fas fa-lock"></i> Com..
+                                  {% endif %}
+                              </li>                              </ul>
                             </div>
                           </div>
                         </li>
-                        <li>
-                          <div class="blog_item_small">
-                            <div class="blog_image">
-                              <a class="blog_image_wrap" href="blog_details.html">
-                                <img
-                                  src="{{asset('assets/images/blogs/small_blog_image_2.jpg')}}"
-                                  alt="Talking Minds - Psychotherapist Site Template"
-                                />
-                              </a>
-                            </div>
-                            <div class="blog_content">
-                              <h3 class="item_title">
-                                <a href="blog_details.html">
-                                  Proven techniques to improve memory and remember
-                                  more
-                                </a>
-                              </h3>
-                              <ul class="post_meta unordered_list">
-                                <li>26 July 2023</li>
-                                <li><a href="#!">120 Views</a></li>
-                                <li><a href="#!">1 Comments</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="blog_item_small">
-                            <div class="blog_image">
-                              <a class="blog_image_wrap" href="blog_details.html">
-                                <img
-                                  src="{{asset('assets/images/blogs/small_blog_image_3.jpg')}}"
-                                  alt="Talking Minds - Psychotherapist Site Template"
-                                />
-                              </a>
-                            </div>
-                            <div class="blog_content">
-                              <h3 class="item_title">
-                                <a href="blog_details.html">
-                                  Establish healthy boundaries at work
-                                </a>
-                              </h3>
-                              <ul class="post_meta unordered_list">
-                                <li>26 July 2023</li>
-                                <li><a href="#!">120 Views</a></li>
-                                <li><a href="#!">1 Comments</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
+                        {% endfor %}
                       </ul>
                     </div>
                     <div class="sidebar_widget">
@@ -230,21 +162,30 @@
                             alt="Talking Minds - Psychotherapist Site Template"
                           />
                         </span>
-                        <span class="title_text">Popular Tags</span>
+                        <span class="title_text">Explore Related Topics</span>
                       </h3>
                       <ul class="post_tags unordered_list">
-                        <li><a href="#!">Family Problem</a></li>
-                        <li><a href="#!">Therapy</a></li>
-                        <li><a href="#!">Teenagers</a></li>
-                        <li><a href="#!">Depression</a></li>
-                        <li><a href="#!">Life Balance</a></li>
-                        <li><a href="#!">Work</a></li>
-                        <li><a href="#!">Couple Problem</a></li>
+                        {% for souscat in souscategories %}
+                        <li><a href="{{ path('app_blogSousCatClient', {'souscat': souscat.id, 'page': 1}) }}">{{ souscat.nom }}</a></li>
+                        {% endfor %}
                       </ul>
                     </div>
                   </aside>
                 </div>
               </div>
+              
+              <div class="pagination_wrap  section_space_lg col-lg-8">
+                <ul class="pagination_nav unordered_list justify-content-center">
+                  {% if (totalPages>0)%}
+                    {% for page in range(1, totalPages) %}
+                    <li {% if curentPage == page %} class="active" {% endif %}>
+                        <a href="{{ path('app_blogClient', {'page': page}) }}">{{ page }}</a>
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            
             </div>
           </section>
           <!-- Blog Section - End

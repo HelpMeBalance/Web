@@ -56,6 +56,14 @@ class PublicationRepository extends ServiceEntityRepository
 
         return $this->paginate($query, $perPage, $page);
     }
+    public function findAllsorted()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.vues', 'DESC')
+            ->addOrderBy('c.dateC', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
     public function findbysouscat(int $souscat)
     {
         return $this->createQueryBuilder('c')
