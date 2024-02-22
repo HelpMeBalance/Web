@@ -11,6 +11,7 @@
               <div class="row">
                 <div class="col-lg-8">
                   <div class="row">
+                    {% if (publications|length >0)%}
                     {% for publication in publications %}
                     <div class="col-md-6">
                       <div class="blog_item">
@@ -61,6 +62,29 @@
                       </div>
                     </div>
                     {% endfor %}
+                    {% else %}
+                    <div class="message">
+                      {% if publications is empty %}
+                      
+                        <div style="text-align: center;">
+                          <img width="700" height="500"
+                          src="{{asset('assets/images/gallery/empty.png')}}"
+                            alt="Talking Minds - Psychotherapist Site Template"
+                          />
+                        </div>
+                        <div class="section_heading text-center">
+                          <h2 class="section_heading_text">Be the first to share your thoughts and experiences in this category!</h2>
+                          <p class="section_heading_description mb-0">
+                            <a class="btn-link" href="{{ path('app_publication_new') }}">
+                              <span class="btn_text">Start Sharing</span>
+                              <span class="btn_icon"><i class="fa-solid fa-arrow-up-right"></i></span>
+                            </a>
+                          </p>
+                        </div>
+                      {% endif %}
+                  </div>
+                  
+                    {% endif %}
                   </div>                
                 </div>
   

@@ -27,7 +27,6 @@
                   </div>
                   <div class="details_content">
                     <ul class="post_meta unordered_list mb-4">
-                      {# <h4 class="author_name">{{publication.user.lastname|capitalize}} {{publication.user.firstname|capitalize}}</h4> #}
                       <li>
                         {% if(publication.anonyme)%}
                         Anonyme
@@ -248,9 +247,8 @@
                   </a>
                   {% endif %}
                   {% endif %}
-                  {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                  {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and publication.comOuvert %}
                   {{ form_start(form)}}
-                  {# {{ form_widget(form.User)}} #}
                   <div class="comment_form pb-0">
                     <h3 class="comment_area_title">Leave a comment</h3>
                     <div class="row">
@@ -425,104 +423,4 @@
           <!-- Blog Details Section - End
           ================================================== -->  
 
-
-
-
-
-
-
-{# 
-
-<h1>Commentaire index</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id  </th>
-                <th>Contenu  </th>
-                <th>Anonyme  </th>
-                <th>Likes  </th>
-                <th>Valide  </th>
-                <th>DateC  </th>
-                <th>DateM  </th>
-                <th>actions  </th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commentaire in commentaires %}
-            <tr>
-                <td>{{ commentaire.id }}</td>
-                <td>{{ commentaire.contenu }}</td>
-                <td>{{ commentaire.anonyme ? 'Yes' : 'No' }}</td>
-                <td>{{ commentaire.likes }}</td>
-                <td>{{ commentaire.valide ? 'Yes' : 'No' }}</td>
-                <td>{{ commentaire.dateC ? commentaire.dateC|date('d-M-y H:i:s') : '' }}</td>
-                <td>{{ commentaire.dateM ? commentaire.dateM|date('d-M-y H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}">show</a>
-                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('app_publication_show', {'id': publication.id}) }}"><strong>show publication </strong></a>
-    <a href="{{ path('app_commentaire_new', {'idPublication': publication.id}) }}">Create new</a>
-    <h1>Publication</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ publication.id }}</td>
-            </tr>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ publication.contenu }}</td>
-            </tr>
-            <tr>
-                <th>ComOuvert</th>
-                <td>{{ publication.comOuvert ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Nombre Commentaire</th>
-                <td>{{ nbcom }}</td>
-            </tr>
-            <tr>
-                <th>Anonyme</th>
-                <td>{{ publication.anonyme ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Likes</th>
-                <td>{{ publication.likes }}</td>
-            </tr>
-            <tr>
-                <th>Valide</th>
-                <td>{{ publication.valide ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>DateC</th>
-                <td>{{ publication.dateC ? publication.dateC|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateM</th>
-                <td>{{ publication.dateM ? publication.dateM|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Vues</th>
-                <td>{{ publication.vues }}</td>
-            </tr>
-        </tbody>
-    </table>
-    {% if (like==0) %}
-    <a href="{{ path('app_publication_like', {'id': publication.id}) }}">Like</a>
-    {%else %}
-    <a href="{{ path('app_publication_dislike', {'id': publication.id}) }}">Dislike</a>
-    {% endif %}
-    <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
-    <a href="{{ path('app_publication_index') }}">back to list</a>
-    {{ include('publication/_delete_form.html.twig') }} #}
 {% endblock %}
