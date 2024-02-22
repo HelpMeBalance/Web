@@ -63,7 +63,6 @@ class CommentaireController extends AbstractController
     {
         $form = $this->createForm(CommentaireType::class, $commentaire);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $commentaire->setDateM(new \DateTimeImmutable());
             $entityManager->flush();
@@ -94,11 +93,11 @@ class CommentaireController extends AbstractController
             'commentaire' => $commentaire,'like'=>0
         ]);
     }
-    #[Route('/{id}/{idp}/{showmore}', name: 'app_commentaire_delete', methods: ['POST'])]
-    public function delete(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager,int $showmore,int $idp): Response
+    #[Route('/{idc}/{idp}/{showmore}', name: 'app_commentaire_delete', methods: ['POST'])]
+    public function delete(Request $request, int $idc, EntityManagerInterface $entityManager,int $showmore,int $idp,CommentaireRepository $commentaireRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$commentaire->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($commentaire);
+        if ($this->isCsrfTokenValid('delete'.$idc, $request->request->get('_token'))) {
+            $entityManager->remove($commentaireRepository->find($idc));
             $entityManager->flush();
         }
 

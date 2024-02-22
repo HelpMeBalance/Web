@@ -19,10 +19,6 @@ class CommentaireType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'id',
                 ])
-            //->add('Publication', EntityType::class, [
-                //'class' => Publication::class,
-                //'choice_label' => 'titre',
-                //])
             ->add('contenu')
             ->add('anonyme')
             

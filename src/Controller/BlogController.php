@@ -99,11 +99,12 @@ class BlogController extends AbstractController
         $Cat=$publication->getCategorie();
         $commentaire = new Commentaire();
         $commentaire->setPublication($publication);
-        $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formm = $this->createForm(CommentaireType::class, $commentaire);
+        $formm->handleRequest($request);
+        if ($formm->isSubmitted() && $formm->isValid()) {
             $entityManager->persist($commentaire);
             $entityManager->flush();
+            return $this->redirectToRoute('app_blogDetails', ['id'=>$publication->getId(),'showmore'=>$showmore], Response::HTTP_SEE_OTHER);
         }
         return $this->render('frontClient/blog_details.html.twig', [
             'controller_name' => 'BlogController',
@@ -121,7 +122,45 @@ class BlogController extends AbstractController
             'commentaireRepository'=>$commentaireRepository,
             'showmore'=>$showmore,
             'commentaire' => $commentaire,
-            'form' => $form,
+            'form' => $formm,
+        ]);
+    }
+    #[Route('/blogDetails/{idp}/{showmore}/{idc}', name: 'app_blogDetails_commentaire_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request,int $showmore, int $idc,int $idp, EntityManagerInterface $entityManager,CommentaireRepository $commentaireRepository,SousCategorieRepository $sousCategorieRepository,CategorieRepository $categorieRepository,PublicationRepository $publicationRepository): Response
+    {
+        $publication=$publicationRepository->find($idp);
+        $Cat=$publication->getCategorie();
+        $newcommentaire = new Commentaire();
+        $newcommentaire->setPublication($publication);
+        $commentaireupdate=new Commentaire();
+        $commentaireupdate= $commentaireRepository->find($idc);
+        $formupdate = $this->createForm(CommentaireType::class, $commentaireupdate);
+        $formupdate->handleRequest($request);
+        if ($formupdate->isSubmitted() && $formupdate->isValid()) {
+            $commentaireupdate->setDateM(new \DateTimeImmutable());
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_blogDetails', ['id'=>$publication->getId(),'showmore'=>$showmore], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('frontClient/blog_details.html.twig', [
+            'controller_name' => 'BlogController',
+            'service' => 1,
+            'part' => 5,
+            'title' =>$publication->getSousCategorie()->getNom(),
+            'titlepage' => 'Blog - ',
+            'publication' => $publication,
+            'commentaires' => $publication->getCommentaires(),
+            'souscategoriesundercat'=>$publication->getCategorie()->getSousCategories(),
+            'souscategories'=> $sousCategorieRepository->findAll(),
+            'categories'=> $categorieRepository->findAll(),
+            'reccpublications' => $publicationRepository->findAllsorted(),
+            'cat'=>$Cat,
+            'commentaireRepository'=>$commentaireRepository,
+            'showmore'=>$showmore,
+            'commentaire' => $newcommentaire,
+            'commentaireupdate' => $commentaireupdate,
+            'formupdate' => $formupdate,
         ]);
     }
 }
