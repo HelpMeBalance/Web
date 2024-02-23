@@ -43,7 +43,7 @@ class PublicationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+   
     #[Route('/{id}', name: 'app_publication_show', methods: ['GET'])]
     public function show(Publication $publication, EntityManagerInterface $entityManager,CommentaireRepository $commentaireRepository): Response
     {
@@ -105,7 +105,15 @@ class PublicationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_blogClient', ['page'=>1], Response::HTTP_SEE_OTHER);
     }
-    
+    #[Route('/{id}/{idcat}', name: 'app_publication_deleteCat', methods: ['POST'])]
+    public function deleteCat(Request $request, Publication $publication, EntityManagerInterface $entityManager,int $idcat): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$publication->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($publication);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_blogCatClient', ['cat'=>$idcat,'page'=>1], Response::HTTP_SEE_OTHER);
+    }
 }
