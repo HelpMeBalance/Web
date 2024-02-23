@@ -1,6 +1,6 @@
 {% extends 'frontClient/base.html.twig' %}
 {% block pageBannerurlretour %}
-                <li><a href="{{ path('app_blogClient', {'page': 1}) }}">Brave Chats</a></li>
+                <li><a href="{{ path('app_blogCatClient', {'cat': cat.id, 'page': 1}) }}">{{cat.nom}}</a></li>
                 <li>{{ title }}</li>
  {% endblock %}
 {% block body %} 
@@ -11,91 +11,17 @@
               <div class="row">
                 <div class="col-lg-8">
                   <div class="row">
-                    {% if (publications|length >0)%}
-                    {% for publication in publications %}
-                    <div class="col-md-6">
-                      <div class="blog_item">
-                        <div class="blog_image">
-                          <a class="blog_image_wrap" href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
-                            <img
-                              src="{{ asset(publication.image) }}"
-                              alt="HelpMeBalance"
-                            />
-                          </a>
-                        </div>
-                        <div class="blog_content">
-                          <ul class="post_category unordered_list">
-                            <li><a href="{{ path('app_blogCatClient', {'cat': publication.categorie.id, 'page': 1}) }}">{{ publication.categorie.nom }}</a></li>
-                          </ul>
-                          <ul class="post_meta unordered_list">
-                            <li>{{ publication.dateM ? publication.dateM|date('j F Y H:i:s')  : '' }}</li>
-                            <li>{{ publication.vues }} <i class="fa-solid fa-eye"></i></li>
-                            <li>
-                                {% set commentCount = commentaireRepository.findAllUnderPublication(publication)|length %}
-                                {% if publication.comOuvert %}
-                                    {% if commentCount > 0 %}
-                                        <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">{{ commentCount }} <i class="fa-solid fa-comment"></i></a>
-                                    {% else %}
-                                    <i class="fa-duotone fa-empty-set"></i> Com..
-                                    {% endif %}
-                                {% else %}
-                                    <i class="fas fa-lock"></i> Com..
-                                {% endif %}
-                            </li>
-                        </ul>
-                        
-                          
-                        
-                        <ul class="post_meta unordered_list">
-                          <li>
-                          <h3 class="item_title">
-                            <a href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
-                                {{ publication.titre }}
-                            </a>
-                          </h3>
-                        </li>
-                          {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and publication.user.id== app.user.id %}
-                        
-                        <li>
-                        <form method="post" action="{{ path('app_publication_deleteCat', {'id': publication.id,'idcat':publication.categorie.id}) }}" onsubmit="return confirm('Are you sure you want to delete this Publication ?');">
-                          <input  type="hidden" name="_token" value="{{ csrf_token('delete' ~ publication.id) }}">
-                          <button class=" btn_reply"><i class="fa-solid fa-trash"></i></button>
-                      </form>
-                        </li>
-                        <li>
-                          <a style="margin-right: 30px;"class=" btn_reply " href="{{ path('app_publication_update_blogClient', {'idp': publication.id}) }}">
-                            <i class="fa-solid fa-edit"></i>
-                          </a> 
-                        </li>
-                        </ul>       
-                        {% endif %}
-                        </ul>
-                          <p>
-                            {{ publication.contenu|slice(0, 40) ~ (publication.contenu|length > 40 ? '...' : '') }}
-
-                          </p>
-                          <a class="btn-link" href="{{ path('app_blogDetails', {'id': publication.id,'showmore':0}) }}">
-                            <span class="btn_text">Read More</span>
-                            <span class="btn_icon"
-                              ><i class="fa-solid fa-arrow-up-right"></i
-                            ></span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    {% endfor %}
-                    {% else %}
                     <div class="message">
-                      {% if publications is empty and cat.souscategories is not empty %}
-                      
+                      {% if cat.souscategories is not empty %}                      
                         <div style="text-align: center;">
                           <img width="700" height="500"
-                          src="{{asset('assets/images/gallery/empty.png')}}"
+                          src="{{asset('assets/images/gallery/chooseb.png')}}"
                             alt="Talking Minds - Psychotherapist Site Template"
                           />
                         </div>
                         <div class="section_heading text-center">
-                          <h2 class="section_heading_text">Be the first to share your thoughts and experiences in this category!</h2>
+                          <h2 class="section_heading_text">Share your experiences!</h2>
+                      
                           <div class="row justify-content-center " >
                             {% for souscategorie in cat.souscategories %}
                             <div class="col-lg-4 col-md-6 col-sm-6">
@@ -122,17 +48,19 @@
                             </div>
                             {% endfor %}
                           </div>
+                          
                         </div>
-                      {% endif %}
+                        {% else %}
+                        system taye7
+
+                        {% endif %}
                   </div>
-                  
-                    {% endif %}
                   </div>                
                 </div>
   
                 <div class="col-lg-4">
                   <aside class="sidebar ps-lg-4">
-                    {# <div class="form-group">
+                    <div class="form-group">
                       <input
                         id="sidebar_search"
                         class="form-control"
@@ -144,25 +72,6 @@
                       <button type="submit" class="input_icon" disabled>
                         <i class="fa-regular fa-magnifying-glass"></i>
                       </button>
-                    </div> #}
-                    <div class="form-group">
-                      <input
-                        id="sidebar_search"
-                        class="form-control"
-                        type="search"
-                        name="search"
-                        placeholder="Share Your Thoughts"
-                        disabled
-                      />  
-                      {% if app.request.attributes.get('souscat')  %}      
-                      <a class="btn-link input_icon" href="{{ path('app_publication_new_blogClient', {'cat': cat.id,'souscat':app.request.attributes.get('souscat')}) }}">
-                        <i class="fa-solid fa-pen-line"></i>
-                      </a>  
-                      {% else %}
-                      <a class="btn-link input_icon" href="{{ path('app_choosesousCatClient', {'cat': cat.id}) }}">
-                        <i class="fa-solid fa-pen-line"></i>
-                      </a> 
-                      {% endif %}          
                     </div>
                     <div class="sidebar_widget">
                       <h3 class="sidebar_widget_title">
@@ -262,16 +171,7 @@
               </div>
               
               <div class="pagination_wrap  section_space_lg col-lg-8">
-                <ul class="pagination_nav unordered_list justify-content-center">
-                  {% if (totalPages>0)%}
-                    {% for page in range(1, totalPages) %}
-                    <li {% if curentPage == page %} class="active" {% endif %}>
-                        <a href="{{ path('app_blogClient', {'page': page}) }}">{{ page }}</a>
-                    </li>
-                    {% endfor %}
-                    {% endif %}
-                </ul>
-            </div>
+              </div>
             
             </div>
           </section>
