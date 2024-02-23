@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - HelpMeBalance</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/fontawesome-all.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/iofrm-style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/iofrm-theme2.css') }}" />
+</head>
+
+<body>
+    <div class="form-body">
+        <div class="website-logo">
+            <a href="">
+                <div class="logo">
+                    <img class="logo-size" src="{{ asset('images/logo-light.svg') }}" alt="" />
+                </div>
+            </a>
+        </div>
+        {# <div class="row"> #}
+
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Get more things done with Loggin platform.</h3>
+                        <p>
+                            Access to the most powerfull tool in the entire design and web
+                            industry.
+                        </p>
+                        <div class="page-links">
+                            <a href="" class="active">New Rendez-Vous</a>
+                            <a href="" class="active"> View Rendez-Vous</a>
+                        </div>
+                        {{ include('rendez_vous/_form.html.twig') }}
+                        <input type="checkbox" id="chk1" /><label for="chk1">Remmeber me</label>
+                    </div>
+                </div>
+            </div>
+            {#
+        </div> #}
+    </div>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+</body>
+
+</html>

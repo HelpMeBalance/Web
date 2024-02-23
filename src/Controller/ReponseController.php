@@ -52,7 +52,7 @@ class ReponseController extends AbstractController
         ]);
     }
 
-#[Route('/{id}/edit/{idq}', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
+#[Route('/{id}/edit', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
 public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager, $idq): Response
 {
     $form = $this->createForm(ReponseType::class, $reponse);
