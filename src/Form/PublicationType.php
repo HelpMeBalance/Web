@@ -42,3 +42,4 @@ class PublicationType extends AbstractType
         ]);
     }
 }
+    
