@@ -12,7 +12,7 @@
                 <div class="col-lg-8">
                   <div class="row">
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED')  %}
-                    {{ form_start(form)}}
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                     <div class="comment_form pb-0">
                       <h3 class="comment_area_title">Express Yourself</h3>
                       <div class="row">
@@ -20,6 +20,7 @@
                           <div class="form-group">
                             <label for="input_name">Title</label>
                             {{ form_widget(form.titre,{'attr' : {'class' : 'form-control'}})}}
+                            {{ form_errors(form.titre, {'attr': {'class': 'text-red-200 bg-red-400'}}) }}
                           </div>
                         </div>
                         
@@ -27,6 +28,8 @@
                           <div class="form-group mb-4">
                             <label for="input_comment">Publication</label>
                             {{ form_widget(form.contenu,{'attr' : {'class' : 'form-control'}})}}
+                            {{ form_errors(form.contenu, {'attr': {'class': 'text-red-200 bg-red-400'}}) }}
+
                           </div>
                         
                           <div class="form-check">

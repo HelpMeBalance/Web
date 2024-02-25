@@ -130,11 +130,14 @@
                          
                           
                           {% if app.request.attributes.get('idc') and app.request.attributes.get('idc') == commentaire.id %}
-                          {{ form_start(formupdate)}}
+                          {{ form_start(formupdate, {'attr': {'novalidate': 'novalidate'}}) }}
+                          <div class="comment_form pb-0">
                           <div class="form-group mb-4">
                             {{ form_widget(formupdate.contenu,{'attr' : {'class' : 'form-control'}})}}
+                            {{ form_errors(formupdate.contenu, {'attr': {'class': 'text-red-200 bg-red-400'}}) }}
+
                           </div>
-                        
+                        </div>
                           <div class="form-check">
                             {{ form_widget(formupdate.anonyme,{'attr' : {'class' : 'checkbox'}})}}
                             <label for="input_checkbox">
@@ -194,7 +197,7 @@
                   {% endif %}
                   {% endif %}
                   {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and publication.comOuvert and not (app.request.attributes.get('idc'))  %}
-                  {{ form_start(form)}}
+                  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                   <div class="comment_form pb-0">
                     <h3 class="comment_area_title">Leave a comment</h3>
                     <div class="row">
@@ -228,6 +231,8 @@
                         <div class="form-group mb-4">
                           <label for="input_comment">Comment</label>
                           {{ form_widget(form.contenu,{'attr' : {'class' : 'form-control','placeholder' : 'Your message'}})}}
+                          {{ form_errors(form.contenu, {'attr': {'class': 'text-red-200 bg-red-400'}}) }}
+
                         </div>
                       
                         <div class="form-check">
@@ -256,6 +261,7 @@
   
                 <div class="col-lg-4">
                   <aside class="sidebar ps-lg-4">
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED')  %}
                     <div class="form-group">
                       <input
                         id="sidebar_search"
@@ -269,6 +275,21 @@
                         <i class="fa-solid fa-pen-line"></i>
                       </a>            
                     </div>
+                    {% else %}
+                    <div class="form-group d-flex items-align-center">
+                      <input
+                        id="sidebar_search"
+                        class="form-control"
+                        type="search"
+                        name="search"
+                        placeholder="Login to post"
+                        disabled
+                      />        
+                      <a class="btn-link input_icon" href="{{ path('app_login') }}">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                      </a>            
+                    </div>
+                    {% endif %}
                     <div class="sidebar_widget">
                       <h3 class="sidebar_widget_title">
                         <span class="title_icon">
@@ -369,4 +390,5 @@
           <!-- Blog Details Section - End
           ================================================== -->  
 
+          
 {% endblock %}
