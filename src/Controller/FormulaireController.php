@@ -30,7 +30,18 @@ class FormulaireController extends AbstractController
             'titlepage' => 'Formulaire - ',
         ]);
     }
-
+    #[Route('/index2', name: 'app_formulaire_index2', methods: ['GET'])]
+    public function index2(FormulaireRepository $formulaireRepository,): Response
+    {
+        return $this->render('formulaire/index2.html.twig', [
+            'formulaires' => $formulaireRepository->findAll(),
+            'controller_name' => 'BlogController',
+            'service' => 1,
+            'part' => 5,
+            'title' => "Formulaire" ,
+            'titlepage' => 'Formulaire - ',
+        ]);
+    }
     #[Route('/new', name: 'app_formulaire_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -102,7 +113,7 @@ class FormulaireController extends AbstractController
             $entityManager->flush();
 
             if ($idq >= sizeof($questionRepository->findAll()) - 1)
-                return $this->redirectToRoute('app_formulaire_index');
+                return $this->redirectToRoute('app_formulaire_index2');
             else
                 return $this->redirectToRoute('app_rendez_vous_quiz', ['idq' => $idq + 1], Response::HTTP_SEE_OTHER);
         }

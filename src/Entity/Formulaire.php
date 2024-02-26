@@ -6,6 +6,7 @@ use App\Repository\FormulaireRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FormulaireRepository::class)]
 class Formulaire
@@ -16,9 +17,12 @@ class Formulaire
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'formulaires')]
+
     private Collection $Question;
 
     #[ORM\ManyToMany(targetEntity: Reponse::class, inversedBy: 'formulaires')]
+    #[Assert\Count(min: 1, minMessage: 'Please select at least one response.')]
+    //#[Assert\Collection(allowMissingFields: false)]
     private Collection $Reponse;
 
     #[ORM\OneToOne(inversedBy: 'formulaire', cascade: ['persist', 'remove'])]
