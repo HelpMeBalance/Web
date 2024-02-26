@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FormulaireType extends AbstractType
 {
@@ -20,8 +21,10 @@ class FormulaireType extends AbstractType
 
             ->add('Reponse', EntityType::class, [
                 'class' => Reponse::class,
-'choice_label' => 'Reponse',
-'multiple' => true,
+                'choice_label' => 'Reponse',
+                'multiple' => true,
+                'expanded' => true,
+
                 'query_builder' => function (ReponseRepository $er) use ($question) {
                     return $er->createQueryBuilder('r')
                         ->andWhere('r.question = :question')
@@ -29,6 +32,7 @@ class FormulaireType extends AbstractType
                 },
             ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
