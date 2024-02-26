@@ -15,6 +15,17 @@ class Commentaire
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'Please enter the content of your comment.')]
+    #[Assert\Length([
+        'min' => 3,
+        'max' => 200,
+        'minMessage' => 'Your comment must be at least {{ limit }} characters long',
+        'maxMessage' => 'Your comment cannot be longer than {{ limit }} characters',
+    ])]
+    #[Assert\Regex(
+        pattern: '/[A-Za-z]/',
+        message: 'Your comment must contain at least one letter.'
+    )]
     private ?string $contenu = null;
 
     #[ORM\Column]
@@ -56,7 +67,7 @@ class Commentaire
         return $this->contenu;
     }
 
-    public function setContenu(string $contenu): static
+    public function setContenu(string $contenu= null): static
     {
         $this->contenu = $contenu;
 

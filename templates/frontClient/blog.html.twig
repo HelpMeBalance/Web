@@ -97,6 +97,7 @@
                         <i class="fa-regular fa-magnifying-glass"></i>
                       </button>                     
                     </div> #}
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED')  %}
                     <div class="form-group">
                       <input
                         id="sidebar_search"
@@ -110,6 +111,21 @@
                         <i class="fa-solid fa-pen-line"></i>
                       </a>            
                     </div>
+                    {% else %}
+                    <div class="form-group d-flex items-align-center">
+                      <input
+                        id="sidebar_search"
+                        class="form-control"
+                        type="search"
+                        name="search"
+                        placeholder="Login to post"
+                        disabled
+                      />        
+                      <a class="btn-link input_icon" href="{{ path('app_login') }}">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                      </a>            
+                    </div>
+                    {% endif %}
                     <div class="sidebar_widget">
                       <h3 class="sidebar_widget_title">
                         <span class="title_icon">
